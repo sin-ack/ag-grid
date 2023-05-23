@@ -23,7 +23,7 @@ export class GridHeaderCtrl extends BeanStub {
 
     private comp: IGridHeaderComp;
     private eGui: HTMLElement;
-    private headerHeight: number;
+    private headerHeight: number = 0;
 
     public setComp(comp: IGridHeaderComp, eGui: HTMLElement, eFocusableElement: HTMLElement): void {
         this.comp = comp;

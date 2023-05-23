@@ -1,5 +1,5 @@
 import { getRowContainerTypeForName, IRowContainerComp, RowContainerCtrl, RowContainerName, RowCtrl } from '@ag-grid-community/core';
-import React, { useMemo, useRef, useState, memo, useContext } from 'react';
+import React, { useMemo, useRef, useState, memo, useContext, useLayoutEffect } from 'react';
 import { classesList, agFlushSync } from '../utils';
 import useReactCommentEffect from '../reactComment';
 import RowComp from './rowComp';
@@ -42,9 +42,13 @@ const RowContainerComp = (params: {name: RowContainerName}) => {
     // however if false, then we need to keep the order as they are in the dom, otherwise rowAnimation breaks
     function updateRowCtrlsOrdered(useFlushSync: boolean) {
 
+
         agFlushSync(useFlushSync, () => {
             setRowCtrlsOrdered(prev => {
                 const rowCtrls = rowCtrlsRef.current;
+
+                const bothEmpty = rowCtrlsRef.current.length === 0 && rowCtrls.length === 0;
+                if (bothEmpty) { return prev; }
 
                 if (domOrderRef.current) {
                     return rowCtrls;
@@ -53,6 +57,15 @@ const RowContainerComp = (params: {name: RowContainerName}) => {
                 // of the elements in the dom, as this would break transition styles
                 const oldRows = prev.filter(r => rowCtrls.indexOf(r) >= 0);
                 const newRows = rowCtrls.filter(r => oldRows.indexOf(r) < 0);
+
+                if (prev.length === oldRows.length && newRows.length === 0) {
+                    return prev;
+                }
+
+                if (oldRows.length === 0) {
+                    return newRows;
+                }
+
                 return [...oldRows, ...newRows];
             });
 
@@ -61,13 +74,17 @@ const RowContainerComp = (params: {name: RowContainerName}) => {
 
     }
 
-    useLayoutEffectOnce(() => {
+    useLayoutEffect(() => {
         const beansToDestroy: any[] = [];
 
         const compProxy: IRowContainerComp = {
-            setViewportHeight: (height: string) => eViewport.current!.style.height = height,
+            setViewportHeight: (height: string) => {
+                if (eViewport.current) {
+                    eViewport.current.style.height = height;
+                }
+            },
             setRowCtrls: (rowCtrls, useFlushSync) => {
-                if(rowCtrlsRef.current !== rowCtrls){
+                if (rowCtrlsRef.current !== rowCtrls) {
                     const useFlush = useFlushSync && rowCtrlsRef.current.length > 0 && rowCtrls.length > 0;
                     rowCtrlsRef.current = rowCtrls;
                     updateRowCtrlsOrdered(useFlush);
@@ -91,7 +108,7 @@ const RowContainerComp = (params: {name: RowContainerName}) => {
             context.destroyBeans(beansToDestroy);
         };
 
-    });
+    }, []);
 
     const buildContainer = () => (
         <div

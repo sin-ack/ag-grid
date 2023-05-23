@@ -1,5 +1,5 @@
 import { CssClassManager, GridBodyCtrl, IGridBodyComp, RowContainerName, _ } from 'ag-grid-community';
-import React, { memo, useContext, useMemo, useRef, useState } from 'react';
+import React, { memo, useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { BeansContext } from './beansContext';
 import GridHeaderComp from './header/gridHeaderComp';
 import useReactCommentEffect from './reactComment';
@@ -52,7 +52,7 @@ const GridBodyComp = () => {
     useReactCommentEffect(' AG Middle ', eBodyViewport);
     useReactCommentEffect(' AG Pinned Bottom ', eBottom);
 
-    useLayoutEffectOnce(() => {
+    useLayoutEffect(() => {
         const beansToDestroy: any[] = [];
         const destroyFuncs: (() => void)[] = [];
 
@@ -90,7 +90,11 @@ const GridBodyComp = () => {
             setAlwaysVerticalScrollClass: setForceVerticalScrollClass,
             setPinnedTopBottomOverflowY: setTopAndBottomOverflowY,
             setCellSelectableCss: (cssClass, flag) => setCellSelectableCss(flag ? cssClass : null),
-            setBodyViewportWidth: (width) => eBodyViewport.current!.style.width = width,
+            setBodyViewportWidth: (width) => {
+                if (eBodyViewport.current) {
+                    eBodyViewport.current.style.width = width;
+                }
+            },
             registerBodyViewportResizeListener: listener => {
                 const unsubscribeFromResize = resizeObserverService.observeResize(eBodyViewport.current!, listener);
                 destroyFuncs.push(() => unsubscribeFromResize());
@@ -113,7 +117,7 @@ const GridBodyComp = () => {
             destroyFuncs.forEach(f => f());
         };
 
-    });
+    }, []);
 
     const rootClasses = useMemo(() =>
         classesList('ag-root', 'ag-unselectable', layoutClass),

@@ -1,7 +1,7 @@
-import React, { memo, useContext, useMemo, useRef, useState } from 'react';
+import React, { memo, useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { BeansContext } from '../beansContext';
 import {
-    IGridHeaderComp, GridHeaderCtrl,
+    IGridHeaderComp, GridHeaderCtrl, CssClassManager,
 } from 'ag-grid-community';
 import { CssClasses } from '../utils';
 import HeaderRowContainerComp from './headerRowContainerComp';
@@ -16,8 +16,12 @@ const GridHeaderComp = () => {
     const {context} = useContext(BeansContext);
     const eGui = useRef<HTMLDivElement>(null);
 
-    useLayoutEffectOnce(() => {
+    useLayoutEffect(() => {
 
+        if (!eGui.current) {
+            console.log('eGui.current is null');
+            return;
+        }
         const compProxy: IGridHeaderComp = {
             addOrRemoveCssClass: (name, on) => setCssClasses(prev => prev.setClass(name, on)),
             setHeightAndMinHeight: height => setHeight(height)
@@ -30,7 +34,7 @@ const GridHeaderComp = () => {
             context.destroyBean(ctrl);
         };
 
-    });
+    }, []);
 
     const className = useMemo( ()=> {
         let res = cssClasses.toString();

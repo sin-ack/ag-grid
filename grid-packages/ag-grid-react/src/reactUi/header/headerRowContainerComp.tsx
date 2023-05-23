@@ -1,4 +1,4 @@
-import React, { memo, useContext, useMemo, useRef, useState } from 'react';
+import React, { memo, useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { BeansContext } from '../beansContext';
 import {
     IHeaderRowContainerComp, HeaderRowCtrl, HeaderRowContainerCtrl, ColumnPinnedType
@@ -22,7 +22,7 @@ const HeaderRowContainerComp = (props: { pinned: ColumnPinnedType }) => {
     const pinnedRight = props.pinned === 'right';
     const centre = !pinnedLeft && !pinnedRight;
 
-    useLayoutEffectOnce(() => {
+    useLayoutEffect(() => {
         const compProxy: IHeaderRowContainerComp = {
             setDisplayed: displayed => {
                 setCssClasses(prev => prev.setClass('ag-hidden', !displayed));
@@ -44,9 +44,11 @@ const HeaderRowContainerComp = (props: { pinned: ColumnPinnedType }) => {
 
             // pinned only
             setPinnedContainerWidth: width => {
+                if (eGui.current) {
                 eGui.current!.style.width = width;
                 eGui.current!.style.minWidth = width;
                 eGui.current!.style.maxWidth = width;
+                }
             }
         };
 
@@ -57,7 +59,7 @@ const HeaderRowContainerComp = (props: { pinned: ColumnPinnedType }) => {
             context.destroyBean(ctrl);
         };
 
-    });
+    }, []);
 
     const className = useMemo(() => cssClasses.toString(), [cssClasses]);
 
