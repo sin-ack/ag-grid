@@ -50,6 +50,7 @@ import { HeaderGroupCellCtrl } from '../headerRendering/cells/columnGroup/header
 import { WithoutGridCommon } from '../interfaces/iCommon';
 import { matchesGroupDisplayType, matchesTreeDataDisplayType } from '../gridOptionsValidator';
 import { PropertyChangedEvent } from '../gridOptionsService';
+import { _ } from '../utils';
 
 export interface ColumnResizeSet {
     columns: Column[];
@@ -272,8 +273,8 @@ export class ColumnModel extends BeanStub {
 
         this.addManagedPropertyListener('groupDisplayType', () => this.onAutoGroupColumnDefChanged());
         this.addManagedPropertyListener('autoGroupColumnDef', () => this.onAutoGroupColumnDefChanged());
-        this.addManagedPropertyListener<ColDefPropertyChangedEvent>('defaultColDef', (params) => this.onSharedColDefChanged(params.source));
-        this.addManagedPropertyListener<ColDefPropertyChangedEvent>('columnTypes', (params) => this.onSharedColDefChanged(params.source));
+        this.addManagedPropertyListener<ColDefPropertyChangedEvent>('defaultColDef', (params) => this.onSharedColDefChanged(params));
+        this.addManagedPropertyListener<ColDefPropertyChangedEvent>('columnTypes', (params) => this.onSharedColDefChanged(params));
     }
 
     private onAutoGroupColumnDefChanged() {
@@ -283,10 +284,12 @@ export class ColumnModel extends BeanStub {
         this.updateDisplayedColumns('gridOptionsChanged');
     }
 
-    private onSharedColDefChanged(source: ColumnEventType = 'api'): void {
-        // likewise for autoGroupCol, the default col def impacts this
-        this.forceRecreateAutoGroups = true;
-        this.createColumnsFromColumnDefs(true, source);
+    private onSharedColDefChanged(params: ColDefPropertyChangedEvent): void {
+
+        // First catch if only a simple object and no changes in the object
+        if (_.isOnlySimpleTypesAndDeeplyEqual(params.previousValue, params.currentValue)) { return; }
+
+        this.recreateColumnDefs(params.source);
     }
 
     public setColumnDefs(columnDefs: (ColDef | ColGroupDef)[], source: ColumnEventType = 'api') {
@@ -296,7 +299,9 @@ export class ColumnModel extends BeanStub {
     }
 
     public recreateColumnDefs(source: ColumnEventType = 'api'): void {
-        this.onSharedColDefChanged(source);
+        // likewise for autoGroupCol, the default col def impacts this
+        this.forceRecreateAutoGroups = true;
+        this.createColumnsFromColumnDefs(true, source);
     }
 
     private destroyOldColumns(oldTree: IProvidedColumn[] | null, newTree?: IProvidedColumn[] | null): void {

@@ -251,3 +251,34 @@ export function removeAllReferences(obj: any, objectName: string): void {
 export function isNonNullObject(value: any): boolean {
     return typeof value === 'object' && value !== null;
 }
+
+
+export function isOnlySimpleTypesAndDeeplyEqual<T>(a: T | null | undefined, b: T | null | undefined): boolean {
+    if (a === b) { return true; }
+    if (a == null && b == null) { return true; } // if both null or undefined, then return true
+    if (a == null || b == null) { return false; }
+    // iterate object keys for object comparison
+    if (typeof a === 'object' && typeof b === 'object') {
+        // This works for arrays too as getOwnPropertyNames returns array indexes for arrays
+        const aProps = Object.getOwnPropertyNames(a);
+        const bProps = Object.getOwnPropertyNames(b);
+        if (aProps.length !== bProps.length) { return false; }
+
+        for (let i = 0; i < aProps.length; i++) {
+            const propName = aProps[i] as keyof T;
+            const aPropValue = a[propName];
+            const bPropValue = b[propName];
+
+            if (typeof aPropValue === 'string' || typeof aPropValue === 'number' || typeof aPropValue === 'boolean') {
+                if (aPropValue !== bPropValue) { return false; }
+            } else if (typeof aPropValue === 'object') {
+                return isOnlySimpleTypesAndDeeplyEqual(aPropValue, bPropValue);
+            } else {
+                return false;
+            }
+        }
+        // All object properties are equal and only simple types
+        return true;
+    }
+    return false;
+}
