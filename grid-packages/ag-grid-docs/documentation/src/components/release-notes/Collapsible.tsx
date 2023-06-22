@@ -17,16 +17,6 @@ const Collapsible: FunctionComponent<Props> = ({ title, versions, fixVersion, on
 
     const collapsibleHandler = () => {
         setShowNotes((prevShowNotes) => !prevShowNotes);
-
-        let url = new URL(window.location);
-
-        if (!showNotes) {
-            url.searchParams.set('showNotes', 'true');
-        } else {
-            url.searchParams.delete('showNotes');
-        }
-
-        window.history.pushState({}, '', url);
     };
 
     const handleVersionLabelClick = (event: React.MouseEvent<HTMLLabelElement>) => {
