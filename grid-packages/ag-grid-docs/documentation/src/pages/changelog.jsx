@@ -6,8 +6,9 @@ import DetailCellRenderer from '../components/grid/DetailCellRendererComponent';
 import Grid from '../components/grid/Grid';
 import IssueTypeCellRenderer from '../components/grid/IssueTypeRenderer';
 import PaddingCellRenderer from '../components/grid/PaddingCellRenderer';
-import ReleaseVersionNotes from '../components/release-notes/ReleaseVersionNotes.jsx';
 import { Icon } from '../components/Icon';
+import ReleaseVersionNotes from '../components/release-notes/ReleaseVersionNotes.jsx';
+import { hostPrefix } from '../utils/consts';
 import styles from './pipelineChangelog.module.scss';
 
 const IS_SSR = typeof window === 'undefined';
@@ -43,14 +44,14 @@ const Changelog = ({ location }) => {
     }, []);
 
     useEffect(() => {
-        fetch('/changelog/changelog.json')
+        fetch(`${hostPrefix}/changelog/changelog.json`)
             .then((response) => response.json())
             .then((data) => {
                 const gridVersions = [...data.map((row) => row.versions[0])];
                 setVersions([...new Set(gridVersions)]);
                 setRowData(data);
             });
-        fetch('/changelog/releaseVersionNotes.json')
+        fetch(`${hostPrefix}/changelog/releaseVersionNotes.json`)
             .then((response) => response.json())
             .then((data) => {
                 setAllReleaseNotes(data);
@@ -278,7 +279,7 @@ const Changelog = ({ location }) => {
                     </section>
 
                     <div className={styles.searchBarOuter}>
-                        <Icon name='search'/>
+                        <Icon name="search" />
                         <input
                             type="search"
                             className={styles.searchBar}
@@ -286,7 +287,9 @@ const Changelog = ({ location }) => {
                             ref={searchBarEl}
                             onChange={onQuickFilterChange}
                         ></input>
-                        <span className='text-secondary'>Find changelog items by issue number, summary content, or version</span>
+                        <span className="text-secondary">
+                            Find changelog items by issue number, summary content, or version
+                        </span>
                     </div>
 
                     <Grid
