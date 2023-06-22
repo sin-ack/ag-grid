@@ -48,6 +48,7 @@
     border-right: $border;
     border-bottom: $border;
     border-left: $border;
+    overflow: hidden;
 
     &:not(.notExpandable) > div {
         overflow: hidden;
