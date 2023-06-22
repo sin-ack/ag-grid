@@ -71,9 +71,10 @@ const Changelog = ({ location }) => {
             );
 
             let currentReleaseNotesHtml = null;
+
             if (releaseNotes) {
                 if (releaseNotes['markdown']) {
-                    fetch('/changelog/' + releaseNotes['markdown'])
+                    fetch(`${hostPrefix}/changelog` + releaseNotes['markdown'])
                         .then((response) => response.text())
                         .then((markdownContent) => {
                             setMarkdownContent(markdownContent);
