@@ -46,6 +46,14 @@
     }
 }
 
+.searchExplainer {
+    line-height: var(--line-height-tight);
+
+    @media screen and (max-width: $breakpoint-changelog-pipeline-large) {
+        display: none;
+    }
+}
+
 .checkboxLabel {
     position: relative;
     top: -1px;

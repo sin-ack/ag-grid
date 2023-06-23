@@ -288,7 +288,7 @@ const Changelog = ({ location }) => {
                             ref={searchBarEl}
                             onChange={onQuickFilterChange}
                         ></input>
-                        <span className="text-secondary">
+                        <span className={classnames(styles.searchExplainer, 'text-secondary')}>
                             Find changelog items by issue number, summary content, or version
                         </span>
                     </div>
