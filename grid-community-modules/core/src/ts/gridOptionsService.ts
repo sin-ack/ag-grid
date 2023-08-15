@@ -336,6 +336,13 @@ export class GridOptionsService {
         return this.environment.getDefaultRowHeight();
     }
 
+    public getDebounceVerticalScrollbar(): number | undefined {
+        const debounceConfig = this.get('debounceVerticalScrollbar');
+        const isDebounce = !(debounceConfig === 0 || debounceConfig === false || debounceConfig == null);
+        const debounceValue = isDebounce ? Number.isFinite(debounceConfig) ? Number(debounceConfig) : 100 : undefined;
+        return debounceValue;
+    }
+
     private isNumeric(value: any): value is number {
         return !isNaN(value) && typeof value === 'number' && isFinite(value);
     }

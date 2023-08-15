@@ -143,9 +143,7 @@ export class RowCtrl extends BeanStub {
         this.paginationPage = beans.paginationProxy.getCurrentPage();
         this.useAnimationFrameForCreate = useAnimationFrameForCreate;
         this.printLayout = printLayout;
-        const debounceConfig = this.gridOptionsService.get('debounceVerticalScrollbar');
-        const isDebounce = !(debounceConfig === 0 || debounceConfig === false || debounceConfig == null);
-        this.isDebounceVerticalScrollbar = isDebounce;
+        this.isDebounceVerticalScrollbar = (this.gridOptionsService.getDebounceVerticalScrollbar() ?? 0) > 0;
 
         this.instanceId = rowNode.id + '-' + instanceIdSequence++;
         this.rowId = escapeString(rowNode.id);
