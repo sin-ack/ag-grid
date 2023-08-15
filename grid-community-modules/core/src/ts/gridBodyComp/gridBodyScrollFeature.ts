@@ -80,12 +80,13 @@ export class GridBodyScrollFeature extends BeanStub {
         this.addManagedListener(this.centerRowContainerCtrl.getViewportElement(), 'scroll', this.onHScroll.bind(this));
         fakeHScroll.onScrollCallback(this.onFakeHScroll.bind(this));
 
-        const isDebounce = this.gridOptionsService.is('debounceVerticalScrollbar');
-
+        const debounceConfig = this.gridOptionsService.get('debounceVerticalScrollbar');
+        const isDebounce = !(debounceConfig === 0 || debounceConfig === false || debounceConfig == null);
+        const debounceValue = isDebounce ? Number.isFinite(debounceConfig) ? Number(debounceConfig) : 100 : 0;
         const onVScroll = isDebounce ?
-            debounce(this.onVScroll.bind(this), 100) : this.onVScroll.bind(this);
+            debounce(this.onVScroll.bind(this), debounceValue) : this.onVScroll.bind(this);
         const onFakeVScroll = isDebounce ?
-            debounce(this.onFakeVScroll.bind(this), 100) : this.onFakeVScroll.bind(this);
+            debounce(this.onFakeVScroll.bind(this), debounceValue) : this.onFakeVScroll.bind(this);
 
         this.addManagedListener(this.eBodyViewport, 'scroll', onVScroll);
         fakeVScroll.onScrollCallback(onFakeVScroll);

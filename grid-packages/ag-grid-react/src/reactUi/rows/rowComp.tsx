@@ -13,9 +13,10 @@ const RowComp = (params: { rowCtrl: RowCtrl, containerType: RowContainerType }) 
     const tabIndex = rowCtrl.getTabIndex();
     const domOrderRef = useRef<boolean>(rowCtrl.getDomOrder());
     const isFullWidth = rowCtrl.isFullWidth();
+    const isDebounced = rowCtrl.isDebounceVerticalScrollbar;
 
     const [userStyles, setUserStyles] = useState<RowStyle | undefined>(() => rowCtrl.getRowStyles());
-    const [cellCtrls, setCellCtrls] = useState<CellCtrl[] | null>(() => isFullWidth ? null : rowCtrl.getCellCtrlsForContainer(containerType)); //rowCtrl.getCellCtrlsForContainer(containerType)
+    const [cellCtrls, setCellCtrls] = useState<CellCtrl[] | null>(() => isFullWidth || isDebounced ? null : rowCtrl.getCellCtrlsForContainer(containerType)); //rowCtrl.getCellCtrlsForContainer(containerType)
     const [fullWidthCompDetails, setFullWidthCompDetails] = useState<UserCompDetails>();
 
     // these styles have initial values, so element is placed into the DOM with them,

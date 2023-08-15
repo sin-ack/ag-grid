@@ -41,7 +41,7 @@ export class PropertyKeys {
         'quickFilterText', 'rowModelType', 'editType', 'domLayout', 'clipboardDelimiter', 'rowGroupPanelShow',
         'multiSortKey', 'pivotColumnGroupTotals', 'pivotRowTotals', 'pivotPanelShow', 'fillHandleDirection',
         'serverSideStoreType', 'groupDisplayType', 'treeDataDisplayType', 'colResizeDefault', 'tooltipTrigger',
-        'serverSidePivotResultFieldSeparator',
+        'serverSidePivotResultFieldSeparator',  'debounceVerticalScrollbar' as any
     ];
 
     public static OBJECT_PROPERTIES: KeysLike<object | HTMLElement>[] = [

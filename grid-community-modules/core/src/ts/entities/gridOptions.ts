@@ -753,7 +753,7 @@ export interface GridOptions<TData = any> {
     /** Set to `true` to always show the vertical scrollbar. Default: `false` */
     alwaysShowVerticalScroll?: boolean;
     /** Set to `true` to debounce the vertical scrollbar. Can provide smoother scrolling on slow machines. Default: `false` */
-    debounceVerticalScrollbar?: boolean;
+    debounceVerticalScrollbar?: boolean | number;
     /** Set to `true` to never show the horizontal scroll. This is useful if the grid is aligned with another grid and will scroll when the other grid scrolls. (Should not be used in combination with `alwaysShowHorizontalScroll`.) Default: `false` */
     suppressHorizontalScroll?: boolean;
     /** When `true`, the grid will not scroll to the top when new row data is provided. Use this if you don't want the default behaviour of scrolling to the top every time you load new data. Default: `false` */

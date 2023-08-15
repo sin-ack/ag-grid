@@ -127,6 +127,8 @@ export class RowCtrl extends BeanStub {
     private businessKeySanitised: string | null = null;
     private businessKeyForNodeFunc: ((node: IRowNode<any>) => string) | undefined;
 
+    public readonly isDebounceVerticalScrollbar: boolean;
+
     constructor(
         rowNode: RowNode,
         beans: Beans,
@@ -141,6 +143,9 @@ export class RowCtrl extends BeanStub {
         this.paginationPage = beans.paginationProxy.getCurrentPage();
         this.useAnimationFrameForCreate = useAnimationFrameForCreate;
         this.printLayout = printLayout;
+        const debounceConfig = this.gridOptionsService.get('debounceVerticalScrollbar');
+        const isDebounce = !(debounceConfig === 0 || debounceConfig === false || debounceConfig == null);
+        this.isDebounceVerticalScrollbar = isDebounce;
 
         this.instanceId = rowNode.id + '-' + instanceIdSequence++;
         this.rowId = escapeString(rowNode.id);
