@@ -34,10 +34,10 @@ If you have created your own theme in Figma using the variables feature you can 
 
 To export your Figma Variables as json...
 
-1. In the Resources panel go to the Plugins tab.
-2. Search for the [Variables Import Export plugin](https://www.figma.com/community/plugin/1254848311152928301).
-3. Click run for the [Variables Import Export plugin](https://www.figma.com/community/plugin/1254848311152928301) and select the 'Export variables' option.
-4. Click the 'Export variables' button and save the json to the `./tokens/` directory.
+1. In the Resources panel go to the Plugins tab and search for the [Design Tokens plugin](https://www.figma.com/community/plugin/888356646278934516/Design-Tokens).
+2. Click on the [Design Tokens plugin](https://www.figma.com/community/plugin/888356646278934516/Design-Tokens) and select the "Export Design Token File" option.
+3. Deselect all include types except for "Figma Variables".
+4. Click the 'Save & Export' button and save the json to the `./tokens/` directory.
 
 <image-caption src="ag-grid-design-system/resources/FDS-export-variables.png" alt="Export Figma Variables" constrained="false" centered="true"></image-caption>
 
