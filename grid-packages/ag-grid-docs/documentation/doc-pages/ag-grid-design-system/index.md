@@ -25,7 +25,7 @@ To start using the AG Grid Design System in Figma just drag and drop the `.fig` 
 
 The Figma file contains comprehensive documentation for how to use the design system and examples of pre-built grids including all our core features.
 
-<a href="../../../downloads/AG-Grid-design-system-30-0-0-preview.zip" download class="button">Download AG Grid Design System</a>
+<a href="../../../downloads/ag-grid-design-system-30.1.0.zip" download class="button">Download AG Grid Design System</a>
 
 ## Customising the Design System
 
