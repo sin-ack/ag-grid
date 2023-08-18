@@ -10,6 +10,13 @@ The AG Grid design system replicates the Alpine & Alpine Dark AG Grid themes wit
 
 The design system has been built from the ground up to be consistent with the javasvscript library, aiding in the designer / developer handoff process.
 
+## Video introduction & Figma documentation
+
+<video-section id="C2ShUfsO6gE" title="Introducing the AG Grid Figma Design System">
+  <p class="font-size-responsive">Watch our short introduction video to the design system on Youtube. You'll learn how to get started with the design system, where to find complete grid templates, and how to build your own grids from scratch.</p>
+  <p class="font-size-responsive">The design system contains comprehensive documentation for all our components right within Figma. We also provide in depth tutorial videos for many of the individual sections.</p>
+</video-section>
+
 ## Download & Install
 
 To get started with the AG Grid design system first download the `.zip` file below. Within the zip archive you'll find a `AG-Grid-design-system-X.X.X.fig` Figma file, and a directory with a sample [Style Dictionary](https://amzn.github.io/style-dictionary/#/) project.
