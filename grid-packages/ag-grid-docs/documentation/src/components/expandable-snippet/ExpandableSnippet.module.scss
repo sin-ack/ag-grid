@@ -19,6 +19,23 @@ $indent: 24px;
     position: relative;
 }
 
+.jsonProperty .jsonProperty {
+    &::before {
+        content: '';
+        position: absolute;
+        width: 24px;
+        height: 2px;
+        top: 12px;
+        left: -34px;
+        background-color: var(--platinum-gray);
+    }
+}
+
+.type-nested-object::before,
+.expandable::before {
+    width: 12px !important;
+}
+
 .type-nested-object > .jsonProperty {
     padding-left: $indent;
 }
@@ -52,11 +69,15 @@ $indent: 24px;
 
 .expanderBar {
     position: absolute;
-    width: 2px;
-    bottom: 1px;
+    width: 8px;
+    bottom: 12px;
     left: -12px;
-    top: 17px;
-    background: var(--bright-blue-gray);
+    top: 19px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--platinum-gray);
+    border-top-width: 0;
+    border-right-width: 0;
 }
 
 .propertyName {
