@@ -9,17 +9,14 @@ $indent: 24px;
 }
 
 .expandableSnippet pre > code {
-    background-image: none;
+    --code-line-height: calc(28 / 16);
 
-    code {
-        color: var(--code-text-color);
-    }
+    line-height: var(--code-line-height);
+    background-size: 1px calc(1em * var(--code-line-height) * 2);
 }
 
 .jsonProperty {
     position: relative;
-    margin-top: $size-half;
-    margin-bottom: $size-half;
 }
 
 .type-nested-object > .jsonProperty {

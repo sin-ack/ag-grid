@@ -2,7 +2,6 @@ import React, { Fragment, useState } from "react";
 import classnames from 'classnames';
 import { Icon } from "../Icon";
 
-import {convertMarkdown, formatJsDocString} from "../documentation-helpers";
 import styles from "./ExpandableSnippet.module.scss";
 
 
@@ -87,7 +86,7 @@ interface ModelSnippetParams {
 
 const ModelSnippet: React.FC<ModelSnippetParams> = ({
     model,
-    closeWith = ';',
+    closeWith = ',',
     path,
     config = {},
 }) => {
@@ -105,7 +104,6 @@ const ModelSnippet: React.FC<ModelSnippetParams> = ({
             })
             .filter(v => !!v);
         return <Fragment>
-            {maybeRenderModelDocumentation(model, config)}
             {propertiesRendering}
         </Fragment>;
     } else if (model.type === "union") {
@@ -187,7 +185,7 @@ function renderUnionNestedObject(
                         {' { '}
                     </span>
                     {!isExpanded && renderPropertyDeclaration(discriminatorProp, discriminatorType, discriminator, isExpanded, true, 'unionTypeProperty')}
-                    {!isExpanded && <span className={classnames('token', 'punctuation')}>; </span>}
+                    {!isExpanded && <span className={classnames('token', 'punctuation')}>, </span>}
                     {
                         isExpanded ?
                             <div className={styles.jsonObject} onClick={(e) => e.stopPropagation()} role="presentation">
@@ -196,7 +194,6 @@ function renderUnionNestedObject(
                             <span className={classnames('token', 'operator')}> ... </span>
                     }
                     <span className={classnames('token', 'punctuation')}>{' }: '}</span>
-                    <span className={classnames('token', 'builtin')}>{desc.tsType}</span>
                     {!last && <span className={classnames('token', 'operator')}> | <br/></span>}
                     {last && closeWith && <span className={classnames('token', 'punctuation')}>{closeWith}</span>}
                 </span>
@@ -220,7 +217,6 @@ function renderUnionNestedObject(
                         <span className={classnames('token', 'operator')}> ... </span>
                 }
                 <span className={classnames('token', 'punctuation')}>{'}: '}</span>
-                <span className={classnames('token', 'builtin')}>{desc.tsType}</span>
                 {!last && <span className={classnames('token', 'operator')}> | <br/></span>}
                 {last && closeWith && <span className={classnames('token', 'punctuation')}>{closeWith}</span>}
             </span>
@@ -253,7 +249,6 @@ const PropertySnippet: React.FC<PropertySnippetParams> = ({
 
     const { deprecated } = meta;
     const { tsType } = desc;
-    const formattedDocumentation = formatPropertyDocumentation(meta, config);
 
     let propertyRendering;
     let collapsePropertyRendering;
@@ -293,8 +288,8 @@ const PropertySnippet: React.FC<PropertySnippetParams> = ({
             console.warn(`AG Docs - unhandled sub-type: ${desc["type"]}`);
     }
 
-    let expandable = !!collapsePropertyRendering || (formattedDocumentation.length > 0);
-    let inlineDocumentation = desc.type === 'function' || !collapsePropertyRendering;
+    let expandable = !!collapsePropertyRendering;
+    // let inlineDocumentation = desc.type === 'function' || !collapsePropertyRendering;
     return (
         <div
             className={classnames(
@@ -313,59 +308,9 @@ const PropertySnippet: React.FC<PropertySnippetParams> = ({
                     <span className={classnames(styles['unexpandable'])} onClick={(e) => e.stopPropagation()}>{propertyRendering}</span>
             }
             {(!isJSONNodeExpanded || needsClosingSemi) && <span className={classnames('token', 'punctuation')}>; </span>}
-            {maybeRenderPropertyDocumentation(meta, inlineDocumentation && isJSONNodeExpanded, config)}
         </div>
     );
 };
-
-function maybeRenderPropertyDocumentation(
-    meta: Omit<JsonModel['properties'][number], 'desc'>,
-    isDocumentationExpanded: boolean,
-    config: Config,
-): React.ReactNode {
-    if (!isDocumentationExpanded) { return; }
-
-    const formattedDocumentation = formatPropertyDocumentation(meta, config);
-    if (formattedDocumentation.length === 0) { return; }
-
-    const renderedDocs = convertMarkdown(formattedDocumentation.join('\n'));
-    if (!renderedDocs || renderedDocs?.trim().length === 0) { return };
-
-    return (
-        <Fragment>
-            <div
-                className={classnames('token', 'comment', styles.jsdocExpandable)}
-                onClick={(e) => e.stopPropagation()}
-                dangerouslySetInnerHTML={{ __html: convertMarkdown(formattedDocumentation.join('\n')) }}
-                role="presentation"
-            >
-            </div>
-        </Fragment>
-    );
-}
-
-function maybeRenderModelDocumentation(
-    model: JsonModel | JsonFunction,
-    config: Config,
-): React.ReactNode {
-    const formattedDocumentation = formatModelDocumentation(model, config);
-    if (formattedDocumentation.length === 0) { return; }
-
-    const renderedDocs = convertMarkdown(formattedDocumentation.join('\n'));
-    if (!renderedDocs || renderedDocs?.trim().length === 0) { return };
-
-    return (
-        <Fragment>
-            <div
-                className={classnames('token', 'comment', styles.jsdocExpandable)}
-                onClick={(e) => e.stopPropagation()}
-                dangerouslySetInnerHTML={{ __html: convertMarkdown(formattedDocumentation.join('\n')) }}
-                role="presentation"
-            >
-            </div>
-        </Fragment>
-    );
-}
 
 function renderJsonNodeExpander(isExpanded: boolean) {
     return <Icon name="chevronRight" svgClasses={classnames(styles.expander, isExpanded && styles.active)} />
@@ -389,22 +334,13 @@ function renderPropertyDeclaration(
             </span>
             {!required && <span className={classnames('token', 'operator')}>?</span>}
             <span className={classnames('token', 'operator')}>: </span>
-            {tsType && <span className={classnames('token', 'builtin')}>{tsType}</span>}
         </Fragment>
     );
 }
 
 function renderPrimitiveType(desc: JsonPrimitiveProperty) {
     if (desc.aliasType) {
-        return (
-            <Fragment>
-                <span className={classnames('token', 'comment')}>/* {desc.aliasType} */</span>
-                <span className={classnames('token', 'builtin')}>{desc.tsType}</span>
-            </Fragment>
-        );
     }
-
-    return <span className={classnames('token', 'builtin')}>{desc.tsType}</span>;
 }
 
 function renderNestedObject(
@@ -416,7 +352,6 @@ function renderNestedObject(
     return (
         <Fragment>
             <span className={classnames('token', 'punctuation')}>{' { '}</span>
-            {maybeRenderPropertyDocumentation(meta, true, config)}
             <div className={styles.jsonObject} role="presentation">
                 <ModelSnippet model={desc.model} config={config} path={path}></ModelSnippet>
             </div>
@@ -452,7 +387,6 @@ function renderArrayType(
         case "nested-object":
             arrayElementRendering = (
                 <Fragment>
-                    {maybeRenderPropertyDocumentation(meta, true, config)}
                     <span className={classnames('token', 'punctuation')}>{'{ '}</span>
                     <div className={styles.jsonObject} role="presentation">
                         <ModelSnippet model={desc.elements.model} path={path.concat('[]')} config={config}></ModelSnippet>
@@ -464,7 +398,6 @@ function renderArrayType(
         case "union":
             arrayElementRendering = (
                 <Fragment>
-                    {maybeRenderPropertyDocumentation(meta, true, config)}
                     <ModelSnippet model={desc.elements} closeWith={''} path={path.concat('[]')} config={config}></ModelSnippet>
                 </Fragment>
             );
@@ -497,14 +430,12 @@ function renderCollapsedFunction(desc: JsonFunction) {
                     <Fragment key={name}>
                         <span className={classnames('token', 'name')}>{name}</span>
                         <span className={classnames('token', 'punctuation')}>: </span>
-                        <span className={classnames('token', 'builtin')}>{type.desc.tsType}</span>
                         {(idx + 1) < paramEntries.length && <span className={classnames('token', 'punctuation')}>, </span>}
                     </Fragment>
                 ))
             }
             <span className={classnames('token', 'punctuation')}>)</span>
             <span className={classnames('token', 'operator')}> => </span>
-            <span className={classnames('token', 'builtin')}>{desc.returnType.tsType}</span>
         </Fragment>
     );
 }
@@ -522,7 +453,6 @@ function renderFunction(
     const singleParameter = paramEntries.length === 1;
     return (
         <Fragment>
-            {maybeRenderModelDocumentation(desc, config)}
             <span className={classnames('token', 'punctuation')}>(</span>
                 <div className={styles.jsonObject} role="presentation">
                 {
@@ -536,7 +466,6 @@ function renderFunction(
             </div>
             <span className={classnames('token', 'punctuation')}>)</span>
             <span className={classnames('token', 'operator')}> => </span>
-            <span className={classnames('token', 'builtin')}>{desc.returnType.tsType}</span>
         </Fragment>
     );
 }
@@ -559,29 +488,6 @@ function isExpandedInitially(propName: string, path: string[], config: Config) {
     return config.expandedProperties?.includes(propName) ??
         config.expandedPaths?.some(p => p.startsWith(currentPath)) ??
         DEFAULT_JSON_NODES_EXPANDED;
-}
-
-function formatPropertyDocumentation(meta: Omit<JsonModel['properties'][number], 'desc'>, config: Config): string[] {
-    const { documentation } = meta;
-    const defaultValue = meta.default;
-    const result: string[] = documentation?.trim() ?
-        [ formatJsDocString(documentation.trim()) ] :
-        [];
-
-    if (meta.hasOwnProperty('default')) {
-        result.push('Default: `' + JSON.stringify(defaultValue) + '`');
-    }
-
-    return result.filter(v => !!v?.trim());
-}
-
-function formatModelDocumentation(model: JsonModel | JsonFunction, config: Config) {
-    const { documentation } = model;
-    const result: string[] = documentation?.trim() ?
-        [ formatJsDocString(documentation) ] :
-        [];
-
-    return result;
 }
 
 export function buildObjectIndent(level: number): string {
