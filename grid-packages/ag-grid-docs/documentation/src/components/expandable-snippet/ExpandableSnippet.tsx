@@ -289,7 +289,6 @@ const PropertySnippet: React.FC<PropertySnippetParams> = ({
     }
 
     let expandable = !!collapsePropertyRendering;
-    // let inlineDocumentation = desc.type === 'function' || !collapsePropertyRendering;
     return (
         <div
             className={classnames(
@@ -307,7 +306,7 @@ const PropertySnippet: React.FC<PropertySnippetParams> = ({
                     collapsePropertyRendering :
                     <span className={classnames(styles['unexpandable'])} onClick={(e) => e.stopPropagation()}>{propertyRendering}</span>
             }
-            {(!isJSONNodeExpanded || needsClosingSemi) && <span className={classnames('token', 'punctuation')}>; </span>}
+            {(!isJSONNodeExpanded || needsClosingSemi) && <span className={classnames('token', 'punctuation')}>, </span>}
         </div>
     );
 };
@@ -333,7 +332,7 @@ function renderPropertyDeclaration(
                 {propName}
             </span>
             {!required && <span className={classnames('token', 'operator')}>?</span>}
-            <span className={classnames('token', 'operator')}>: </span>
+            {expandable && <span className={classnames('token', 'operator')}>:</span>}
         </Fragment>
     );
 }
