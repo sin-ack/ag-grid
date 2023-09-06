@@ -840,6 +840,12 @@
                 "url": "/grouping/"
             }
         },
+        "groupMaintainValueType": {
+            "more": {
+                "name": "Row Grouping - Complex Objects",
+                "url": "/grouping-complex-objects/"
+            }
+        },
         "groupDisplayType": {
             "more": {
                 "name": "Row Grouping - Display Types",

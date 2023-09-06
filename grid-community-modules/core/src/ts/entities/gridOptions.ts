@@ -576,6 +576,8 @@ export interface GridOptions<TData = any> {
 
     // *** Row Grouping *** //
 
+    /** When enabled, the grid will not cast group values to string type. Default: `false` */
+    groupMaintainValueType?: boolean;
     /**
      * Specifies how the results of row grouping should be displayed.
      *

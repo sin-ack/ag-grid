@@ -684,6 +684,8 @@ export class AgGridAngular<TData = any, TColDef extends ColDef<TData> = ColDef<a
     @Input() public fullWidthCellRendererParams: any = undefined;
     /** Set to `true` to have the Full Width Rows embedded in grid's main container so they can be scrolled horizontally .     */
     @Input() public embedFullWidthRows: boolean | undefined = undefined;
+    /** When enabled, the grid will not cast group values to string type. Default: `false`     */
+    @Input() public groupMaintainValueType: boolean | undefined = undefined;
     /** Specifies how the results of row grouping should be displayed.
          *
          *  The options are:
@@ -1335,5 +1337,6 @@ export class AgGridAngular<TData = any, TColDef extends ColDef<TData> = ColDef<a
     static ngAcceptInputType_suppressCutToClipboard: boolean | null | '';
     static ngAcceptInputType_enableAdvancedFilter: boolean | null | '';
     static ngAcceptInputType_includeHiddenColumnsInAdvancedFilter: boolean | null | '';
+    static ngAcceptInputType_groupMaintainValueType: boolean | null | '';
     // @END@
 }

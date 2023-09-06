@@ -92,7 +92,7 @@ export class PropertyKeys {
         'stopEditingWhenCellsLoseFocus', 'maintainColumnOrder', 'groupMaintainOrder', 'columnHoverHighlight', 'suppressReactUi', 'readOnlyEdit', 'suppressRowVirtualisation',
         'enableCellEditingOnBackspace', 'resetRowDataOnUpdate', 'removePivotHeaderRowWhenSingleValueColumn', 'suppressCopySingleCellRanges', 'suppressGroupRowsSticky',
         'suppressServerSideInfiniteScroll', 'rowGroupPanelSuppressSort', 'allowShowChangeAfterFilter', 'suppressCutToClipboard', 'enableAdvancedFilter',
-        'includeHiddenColumnsInAdvancedFilter',
+        'includeHiddenColumnsInAdvancedFilter', 'groupMaintainValueType',
     ];
 
     /** You do not need to include event callbacks in this list, as they are generated automatically. */
