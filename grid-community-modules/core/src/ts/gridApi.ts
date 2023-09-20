@@ -1232,6 +1232,11 @@ export class GridApi<TData = any> {
         this.gos.set('navigateToNextHeader', navigateToNextHeaderFunc);
     }
 
+    /** Set the number of group columns to lock. */
+    public setGroupLockGroupColumns(newValue: number) {
+        this.gos.set('groupLockGroupColumns', newValue);
+    }
+
     public setRowGroupPanelShow(rowGroupPanelShow: 'always' | 'onlyWhenGrouping' | 'never'): void {
         this.gos.set('rowGroupPanelShow', rowGroupPanelShow);
     }

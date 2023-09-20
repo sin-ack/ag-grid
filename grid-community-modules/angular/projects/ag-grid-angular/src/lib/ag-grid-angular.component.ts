@@ -716,6 +716,8 @@ export class AgGridAngular<TData = any, TColDef extends ColDef<TData> = ColDef<a
     @Input() public groupMaintainOrder: boolean | undefined = undefined;
     /** When `true`, if you select a group, the children of the group will also be selected. Default: `false`     */
     @Input() public groupSelectsChildren: boolean | undefined = undefined;
+    /** Lock group columns from being moved or ungrouped. Provided number specifies the number of groups that will be locked, e.g. `0` for no group locking. `1` for first group column locked, `2` for first two group columns locked, `-1` for all group columns locked.     */
+    @Input() public groupLockGroupColumns: number | undefined = undefined;
     /** Set to determine whether filters should be applied on aggregated group values. Default: `false`     */
     @Input() public groupAggFiltering: boolean | IsRowFilterable<TData> | undefined = undefined;
     /** If grouping, this controls whether to show a group footer when the group is expanded.

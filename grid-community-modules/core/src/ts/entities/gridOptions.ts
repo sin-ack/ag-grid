@@ -606,6 +606,8 @@ export interface GridOptions<TData = any> {
     groupMaintainOrder?: boolean;
     /** When `true`, if you select a group, the children of the group will also be selected. Default: `false` */
     groupSelectsChildren?: boolean;
+    /** Lock group columns from being moved or ungrouped. Provided number specifies the number of groups that will be locked, e.g. `0` for no group locking. `1` for first group column locked, `2` for first two group columns locked, `-1` for all group columns locked. */
+    groupLockGroupColumns?: number;
     /** Set to determine whether filters should be applied on aggregated group values. Default: `false` */
     groupAggFiltering?: boolean | IsRowFilterable<TData>;
     /**

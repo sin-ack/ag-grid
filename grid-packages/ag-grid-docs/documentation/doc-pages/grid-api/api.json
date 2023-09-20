@@ -360,6 +360,10 @@
         "collapseAll": {},
         "setRowNodeExpanded": {},
         "onGroupExpandedOrCollapsed": {},
+        "setGroupLockGroupColumns": {"more": {
+            "name": "Group Lock Group Columns",
+            "url": "/grid-options/#reference-rowGrouping-groupLockGroupColumns"
+        }},
         "setTreeData": {
             "more": {
                 "name": "Tree Data",
