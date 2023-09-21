@@ -419,7 +419,14 @@ export class EnterpriseMenu extends BeanStub {
         const rowGroupCount = this.columnModel.getRowGroupColumns().length;
         const doingGrouping = rowGroupCount > 0;
 
-        const groupedByThisColumn = this.columnModel.getRowGroupColumns().indexOf(this.column) >= 0;
+        const rowGroupColumns = this.columnModel.getRowGroupColumns();
+        const indexInRowGroupColumns = rowGroupColumns.indexOf(this.column);
+        const groupedByThisColumn = indexInRowGroupColumns >= 0;
+        const groupLockGroupColumns = this.gridOptionsService.getNum('groupLockGroupColumns') ?? 0;
+        const groupLocked = groupLockGroupColumns === -1 ? true : groupLockGroupColumns > indexInRowGroupColumns;
+        console.log({rowGroupColumns, column: this.column, groupLocked})
+
+
         const allowValue = this.column.isAllowValue();
         const allowRowGroup = this.column.isAllowRowGroup();
         const isPrimary = this.column.isPrimary();
