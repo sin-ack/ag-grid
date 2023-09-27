@@ -74,7 +74,8 @@ export class RowGroupDropZonePanel extends BaseDropZonePanel {
         let groupLocked = false;
         if (column.getColDef().showRowGroup || column.isRowGroupActive()) {
             const groupLockGroupColumns = this.gridOptionsService.getNum('groupLockGroupColumns') ?? 0;
-            groupLocked = groupLockGroupColumns === -1 ? true : groupLockGroupColumns > rowGroupColumnsPosition;
+            const minimumAllowedIndex = (groupLockGroupColumns === -1) ?rowGroupColumns.length : groupLockGroupColumns;
+            groupLocked = minimumAllowedIndex > rowGroupColumnsPosition;
         }
         return groupLocked;
     }

@@ -63,6 +63,8 @@ export abstract class BaseDropZonePanel extends Component {
     private childColumnComponents: DropZoneColumnComp[] = [];
     private insertIndex: number;
 
+    private groupLockGroupColumns: number;
+
     // when this component is refreshed, we rip out all DOM elements and build it up
     // again from scratch. one exception is eColumnDropList, as we want to maintain the
     // scroll position between the refreshes, so we create one instance of it here and
@@ -128,6 +130,9 @@ export abstract class BaseDropZonePanel extends Component {
         this.addManagedListener(this.beans.eventService, Events.EVENT_NEW_COLUMNS_LOADED, this.refreshGui.bind(this));
         this.addManagedPropertyListener('functionsReadOnly', this.refreshGui.bind(this));
 
+        this.groupLockGroupColumns = this.gridOptionsService.getNum('groupLockGroupColumns') ?? 0;
+        this.addManagedPropertyListener('groupLockGroupColumns', (params) => this.groupLockGroupColumns = params.currentValue ?? 0);
+
         this.setupDropTarget();
 
         this.positionableFeature = new PositionableFeature(this.getGui(), { minHeight: 100 });
@@ -191,6 +196,14 @@ export abstract class BaseDropZonePanel extends Component {
         return type === DragSourceType.HeaderCell || type === DragSourceType.ToolPanel;
     }
 
+
+    private minimumAllowedNewInsertIndex(): number {
+        if (this.groupLockGroupColumns === -1) {
+            return this.colModel.getRowGroupColumns().length;
+        }
+        return this.groupLockGroupColumns;
+    }
+
     private checkInsertIndex(draggingEvent: DraggingEvent): boolean {
         const newIndex = this.getNewInsertIndex(draggingEvent);
 
@@ -202,7 +215,8 @@ export abstract class BaseDropZonePanel extends Component {
         const changed = newIndex !== this.insertIndex;
 
         if (changed) {
-            this.insertIndex = newIndex;
+            const minimumAllowedIndex = this.minimumAllowedNewInsertIndex();
+            this.insertIndex = (newIndex < minimumAllowedIndex) ? minimumAllowedIndex : newIndex;
         }
 
         return changed;

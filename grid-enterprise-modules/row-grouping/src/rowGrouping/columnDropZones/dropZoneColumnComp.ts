@@ -79,6 +79,11 @@ export class DropZoneColumnComp extends Component {
         this.addElementClasses(this.eButton, 'button');
 
         this.eDragHandle.appendChild(_.createIconNoSpan('columnDrag', this.gridOptionsService)!);
+
+        if (this.locked) {
+            _.setDisplayed(this.eDragHandle, false);
+        }
+        
         this.eButton.appendChild(_.createIconNoSpan('cancel', this.gridOptionsService)!);
 
         this.setupSort();
