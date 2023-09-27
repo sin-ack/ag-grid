@@ -169,7 +169,7 @@ export class EnterpriseMenuFactory extends BeanStub implements IMenuFactory {
 
     private addStopAnchoring(
         stopAnchoringPromise: AgPromise<() => void>,
-        column: Column, 
+        column: Column,
         closedFuncsArr: (() => void)[]
     ) {
         stopAnchoringPromise.then((stopAnchoringFunc: () => void) => {
@@ -216,7 +216,7 @@ export class EnterpriseMenuFactory extends BeanStub implements IMenuFactory {
 
                 if (columnToFocus) {
                     this.focusService.focusHeaderPosition({
-                        headerPosition:{
+                        headerPosition: {
                             headerRowIndex: headerPosition.headerRowIndex,
                             column: columnToFocus
                         }
@@ -420,9 +420,7 @@ export class EnterpriseMenu extends BeanStub {
         const doingGrouping = rowGroupCount > 0;
         const rowGroupColumns = this.columnModel.getRowGroupColumns();
         const groupedByThisColumn = rowGroupColumns.indexOf(this.column) >= 0;
-        const rowGroupColumnIndex = rowGroupColumns.indexOf(this.column);
 
-        const allColumns = this.columnModel.getAllGridColumns();
         const autoColumns = this.columnModel.getGroupAutoColumns();
         const autoColumnPosition = autoColumns?.indexOf(this.column) ?? -1
 
