@@ -102,6 +102,10 @@ export class PivotDropZonePanel extends BaseDropZonePanel {
         return column.isAllowPivot() && !column.isPivotActive();
     }
 
+    protected isColumnLocked(column: Column): boolean {
+        return false;
+    }
+
     protected updateColumns(columns: Column[]): void {
         if (this.gridOptionsService.is('functionsPassive')) {
             const event: WithoutGridCommon<ColumnPivotChangeRequestEvent> = {

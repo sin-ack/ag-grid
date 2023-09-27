@@ -64,8 +64,19 @@ export class RowGroupDropZonePanel extends BaseDropZonePanel {
     protected isColumnDroppable(column: Column): boolean {
         // we never allow grouping of secondary columns
         if (this.gridOptionsService.is('functionsReadOnly') || !column.isPrimary()) { return false; }
-
         return column.isAllowRowGroup() && !column.isRowGroupActive();
+    }
+
+    protected isColumnLocked(column: Column): boolean {
+        const rowGroupColumns = this.columnModel.getRowGroupColumns();
+        const rowGroupColumnsPosition = rowGroupColumns?.indexOf(column) ?? -1
+
+        let groupLocked = false;
+        if (column.getColDef().showRowGroup || column.isRowGroupActive()) {
+            const groupLockGroupColumns = this.gridOptionsService.getNum('groupLockGroupColumns') ?? 0;
+            groupLocked = groupLockGroupColumns === -1 ? true : groupLockGroupColumns > rowGroupColumnsPosition;
+        }
+        return groupLocked;
     }
 
     protected updateColumns(columns: Column[]) {

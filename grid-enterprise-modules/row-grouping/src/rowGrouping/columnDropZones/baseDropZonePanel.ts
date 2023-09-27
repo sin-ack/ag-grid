@@ -77,6 +77,7 @@ export abstract class BaseDropZonePanel extends Component {
     protected abstract getExistingColumns(): Column[];
     protected abstract getIconName(): string;
     protected abstract getAriaLabel(): string;
+    protected abstract isColumnLocked(column: Column): boolean;
 
     @Autowired('focusService') private readonly focusService: FocusService;
 
@@ -509,7 +510,7 @@ export abstract class BaseDropZonePanel extends Component {
     }
 
     private createColumnComponent(column: Column, ghost: boolean): DropZoneColumnComp {
-        const columnComponent = new DropZoneColumnComp(column, this.dropTarget, ghost, this.dropZonePurpose, this.horizontal);
+        const columnComponent = new DropZoneColumnComp(column, this.dropTarget, ghost, this.dropZonePurpose, this.horizontal, this.isColumnLocked(column));
         columnComponent.addEventListener(DropZoneColumnComp.EVENT_COLUMN_REMOVE, this.removeColumns.bind(this, [column]));
 
         this.beans.context.createBean(columnComponent);

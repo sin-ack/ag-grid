@@ -40,11 +40,11 @@ export class DropZoneColumnComp extends Component {
         </span>`;
 
     @Autowired('dragAndDropService') private readonly dragAndDropService: DragAndDropService;
-    @Autowired('columnModel')  private readonly  columnModel: ColumnModel;
-    @Autowired('popupService')  private readonly popupService: PopupService;
+    @Autowired('columnModel') private readonly columnModel: ColumnModel;
+    @Autowired('popupService') private readonly popupService: PopupService;
     @Optional('aggFuncService') private readonly aggFuncService: IAggFuncService;
     @Autowired('sortController') private readonly sortController: SortController;
-    
+
     @RefSelector('eText') private eText: HTMLElement;
     @RefSelector('eDragHandle') private eDragHandle: HTMLElement;
     @RefSelector('eButton') private eButton: HTMLElement;
@@ -53,15 +53,18 @@ export class DropZoneColumnComp extends Component {
 
     private displayName: string | null;
     private popupShowing = false;
+    private locked = false;
 
     constructor(
         private column: Column,
         private dragSourceDropTarget: DropTarget,
         private ghost: boolean,
         private dropZonePurpose: TDropZone,
-        private horizontal: boolean
+        private horizontal: boolean,
+        private _locked: boolean
     ) {
         super();
+        this.locked = _locked;
     }
 
     @PostConstruct
@@ -102,7 +105,7 @@ export class DropZoneColumnComp extends Component {
         const { name, aggFuncName } = this.getColumnAndAggFuncName();
 
         const aggSeparator = translate('ariaDropZoneColumnComponentAggFuncSeparator', ' of ');
-        const sortDirection =  {
+        const sortDirection = {
             asc: translate('ariaDropZoneColumnComponentSortAscending', 'ascending'),
             desc: translate('ariaDropZoneColumnComponentSortDescending', 'descending'),
         };
@@ -160,7 +163,7 @@ export class DropZoneColumnComp extends Component {
                 const multiSort = sortUsingCtrl ? (event.ctrlKey || event.metaKey) : event.shiftKey;
                 this.sortController.progressSort(this.column, multiSort, 'uiColumnSorted');
             };
-    
+
             this.addGuiEventListener('click', performSort);
             this.addGuiEventListener('keydown', (e: KeyboardEvent) => {
                 const isEnter = e.key === KeyCode.ENTER;
@@ -207,35 +210,36 @@ export class DropZoneColumnComp extends Component {
     }
 
     private setupRemove(): void {
-        _.setDisplayed(this.eButton, !this.gridOptionsService.is('functionsReadOnly'));
+        _.setDisplayed(this.eButton, !this.locked && !this.gridOptionsService.is('functionsReadOnly'));
+        if (!this.locked) {
+            const agEvent: ColumnRemoveEvent = { type: DropZoneColumnComp.EVENT_COLUMN_REMOVE };
 
-        const agEvent: ColumnRemoveEvent = { type: DropZoneColumnComp.EVENT_COLUMN_REMOVE };
+            this.addGuiEventListener('keydown', (e: KeyboardEvent) => {
+                const isEnter = e.key === KeyCode.ENTER;
+                const isDelete = e.key === KeyCode.DELETE;
 
-        this.addGuiEventListener('keydown', (e: KeyboardEvent) => {
-            const isEnter = e.key === KeyCode.ENTER;
-            const isDelete = e.key === KeyCode.DELETE;
+                if (isDelete) {
+                    e.preventDefault();
+                    this.dispatchEvent(agEvent);
+                }
 
-            if (isDelete) {
-                e.preventDefault();
+                if (isEnter && this.isAggregationZone() && !this.gridOptionsService.is('functionsReadOnly')) {
+                    e.preventDefault();
+                    this.onShowAggFuncSelection();
+                }
+            });
+
+            this.addManagedListener(this.eButton, 'click', (mouseEvent: MouseEvent) => {
                 this.dispatchEvent(agEvent);
-            }
+                mouseEvent.stopPropagation();
+            });
 
-            if (isEnter && this.isAggregationZone() && !this.gridOptionsService.is('functionsReadOnly')) {
-                e.preventDefault();
-                this.onShowAggFuncSelection();
-            }
-        });
-
-        this.addManagedListener(this.eButton, 'click', (mouseEvent: MouseEvent) => {
-            this.dispatchEvent(agEvent);
-            mouseEvent.stopPropagation();
-        });
-
-        const touchListener = new TouchListener(this.eButton);
-        this.addManagedListener(touchListener, TouchListener.EVENT_TAP, () => {
-            this.dispatchEvent(agEvent);
-        });
-        this.addDestroyFunc(touchListener.destroy.bind(touchListener));
+            const touchListener = new TouchListener(this.eButton);
+            this.addManagedListener(touchListener, TouchListener.EVENT_TAP, () => {
+                this.dispatchEvent(agEvent);
+            });
+            this.addDestroyFunc(touchListener.destroy.bind(touchListener));
+        }
     }
 
     private getColumnAndAggFuncName(): { name: string, aggFuncName: string } {
@@ -272,8 +276,8 @@ export class DropZoneColumnComp extends Component {
         const virtualListGui = virtualList.getGui();
 
         virtualList.setModel({
-            getRow: function(index: number) { return rows[index]; },
-            getRowCount: function() { return rows.length; }
+            getRow: function (index: number) { return rows[index]; },
+            getRowCount: function () { return rows.length; }
         });
 
         this.getContext().createBean(virtualList);

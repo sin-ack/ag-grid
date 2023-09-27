@@ -72,6 +72,10 @@ export class ValuesDropZonePanel extends BaseDropZonePanel {
         return column.isAllowValue() && !column.isValueActive();
     }
 
+    protected isColumnLocked(column: Column): boolean {
+        return false;
+    }
+
     protected updateColumns(columns: Column[]): void {
         if (this.gridOptionsService.is('functionsPassive')) {
             const event: WithoutGridCommon<ColumnValueChangeRequestEvent> = {
