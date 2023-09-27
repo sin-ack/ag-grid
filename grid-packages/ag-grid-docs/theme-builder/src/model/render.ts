@@ -66,6 +66,13 @@ export const renderedThemeToCss = ({
     }
   }
   css += '}';
+
+  const borderRadius = properties['--ag-border-radius'];
+  if (borderRadius) {
+    css += `\n.${themeName} .ag-root-wrapper {\n`;
+    css += `    border-radius: ${borderRadius};\n`;
+    css += `}`;
+  }
   return css;
 };
 

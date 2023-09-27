@@ -63,11 +63,21 @@ const variables: Record<string, VariableInfo> = {
   '--ag-selected-row-background-color': { type: 'color' },
   '--ag-subheader-background-color': { type: 'color' },
   '--ag-subheader-toolbar-background-color': { type: 'color' },
+
   '--ag-border-radius': { type: 'dimension', min: 0, max: 50, step: 1 },
   '--ag-borders': { type: 'border', style: true, width: true },
   '--ag-borders-critical': { type: 'border', style: true, width: true },
   '--ag-borders-secondary': { type: 'border', style: true, width: true },
   '--ag-secondary-border-color': { type: 'color' },
+
+  '--ag-row-height': { type: 'dimension', min: 5, max: 200, step: 1 },
+  '--ag-cell-horizontal-border': { type: 'border', style: true, color: true },
+  '--ag-cell-horizontal-padding': { type: 'dimension', min: 0, max: 100, step: 1 },
+  '--ag-cell-widget-spacing': { type: 'dimension', min: 0, max: 100, step: 1 },
+  '--ag-data-color': { type: 'color' },
+  '--ag-odd-row-background-color': { type: 'color' },
+  '--ag-row-border-style': { type: 'border', style: true },
+  '--ag-row-border-width': { type: 'border', width: true },
 };
 
 export const allVariableNames = Object.keys(variables);

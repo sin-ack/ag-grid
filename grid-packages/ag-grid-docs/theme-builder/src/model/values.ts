@@ -117,10 +117,32 @@ export const parseCssColor = (css: string): ColorValue | null => {
   }
 };
 
+const numberWithUnits = /^([\d.]+)(\w+)$/;
+const calcExpression = /^calc\(((?:[\d.]+\w+|[\s\d+\-*/)()])+)\)$/i;
+
 export const parseCssDimension = (css: string): DimensionValue | null => {
-  const match = css.match(/^(\d+(?:\.\d+)?)(\w+)$/);
-  if (match) {
-    return dimension(parseFloat(match[1]), match[2]);
+  const numberMatch = css.match(numberWithUnits);
+  if (numberMatch) {
+    const number = parseFloat(numberMatch[1]);
+    if (isNaN(number)) return null;
+    return dimension(number, numberMatch[2]);
+  }
+  const calcMatch = css.match(calcExpression);
+  if (calcMatch) {
+    const expression = calcMatch[1];
+    const unitsRegex = /[a-z]+/gi;
+    const units = [...expression.matchAll(unitsRegex)].map((item) => item[0]);
+    const unit = units[0];
+    if (!unit) return null;
+    if (units.find((otherUnit) => otherUnit !== unit)) return null;
+    let result: unknown;
+    try {
+      result = eval(expression.replace(unitsRegex, '')) as unknown;
+    } catch {
+      return null;
+    }
+    if (typeof result !== 'number') return null;
+    return dimension(result, unit);
   }
   return null;
 };

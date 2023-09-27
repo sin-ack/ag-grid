@@ -49,6 +49,18 @@ test(parseCssDimension, () => {
   expect(parseCssDimension('4px')).toEqual(dimension(4, 'px'));
   expect(parseCssDimension('4.5px')).toEqual(dimension(4.5, 'px'));
   expect(parseCssDimension('0vh')).toEqual(dimension(0, 'vh'));
+
+  expect(parseCssDimension('4')).toEqual(null);
+  expect(parseCssDimension('calc(4)')).toEqual(null);
+
+  expect(parseCssDimension('calc(4px*4)')).toEqual(dimension(16, 'px'));
+  expect(parseCssDimension('calc( 4px * 4 )')).toEqual(dimension(16, 'px'));
+  expect(parseCssDimension('calc(3vh)')).toEqual(dimension(3, 'vh'));
+
+  expect(parseCssDimension('calc(5em * (1em + 3em))')).toEqual(dimension(20, 'em'));
+
+  expect(parseCssDimension('calc(3vh+5px)')).toEqual(null); // invalid - mixed units
+  expect(parseCssDimension('calc(3vh())')).toEqual(null); // invalid - syntax error
 });
 
 test(parseCssBorder, () => {

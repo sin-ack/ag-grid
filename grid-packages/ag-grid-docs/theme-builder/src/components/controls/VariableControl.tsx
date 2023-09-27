@@ -11,6 +11,7 @@ import { getVariableDefault } from 'model/variableDefaults';
 import { getVariableInfoOrThrow } from 'model/variables';
 import { ReactElement, memo, useState } from 'react';
 import { DefaultValue } from './DefaultValue';
+import { BorderInput } from './inputs/BorderInput';
 import { ColorInput } from './inputs/ColorInput';
 import { DimensionInput } from './inputs/DimensionInput';
 
@@ -85,7 +86,16 @@ const VariableControl = ({ variableName, feature }: VariableControlProps): JSX.E
         );
       case 'border':
         if (info.type !== 'border') throw new Error(mismatchError);
-        return <div>TODO: border control</div>;
+        return (
+          <BorderInput
+            value={value}
+            info={info}
+            error={error}
+            onErrorChange={setError}
+            onValueChange={setValue}
+            initialFocus={shouldFocus}
+          />
+        );
     }
   };
 
