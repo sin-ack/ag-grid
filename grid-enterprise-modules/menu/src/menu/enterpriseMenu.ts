@@ -418,14 +418,19 @@ export class EnterpriseMenu extends BeanStub {
 
         const rowGroupCount = this.columnModel.getRowGroupColumns().length;
         const doingGrouping = rowGroupCount > 0;
-
         const rowGroupColumns = this.columnModel.getRowGroupColumns();
-        const indexInRowGroupColumns = rowGroupColumns.indexOf(this.column);
-        const groupedByThisColumn = indexInRowGroupColumns >= 0;
-        const groupLockGroupColumns = this.gridOptionsService.getNum('groupLockGroupColumns') ?? 0;
-        const groupLocked = groupLockGroupColumns === -1 ? true : groupLockGroupColumns > indexInRowGroupColumns;
-        console.log({rowGroupColumns, column: this.column, groupLocked})
+        const groupedByThisColumn = rowGroupColumns.indexOf(this.column) >= 0;
+        const rowGroupColumnIndex = rowGroupColumns.indexOf(this.column);
 
+        const allColumns = this.columnModel.getAllGridColumns();
+        const autoColumns = this.columnModel.getGroupAutoColumns();
+        const autoColumnPosition = autoColumns?.indexOf(this.column) ?? -1
+
+        let groupLocked = false;
+        if (this.column.getColDef().showRowGroup || this.column.isRowGroupActive()) {
+            const groupLockGroupColumns = this.gridOptionsService.getNum('groupLockGroupColumns') ?? 0;
+            groupLocked = groupLockGroupColumns === -1 ? true : groupLockGroupColumns > autoColumnPosition;
+        }
 
         const allowValue = this.column.isAllowValue();
         const allowRowGroup = this.column.isAllowRowGroup();
@@ -458,13 +463,15 @@ export class EnterpriseMenu extends BeanStub {
         result.push('autoSizeAll');
         result.push(EnterpriseMenu.MENU_ITEM_SEPARATOR);
 
-        if (!!this.column.getColDef().showRowGroup) {
+        if (!!this.column.getColDef().showRowGroup && !groupLocked) {
             result.push('rowUnGroup');
         }
 
         if (allowRowGroup && this.column.isPrimary()) {
             if (groupedByThisColumn) {
-                result.push('rowUnGroup');
+                if (!groupLocked) {
+                    result.push('rowUnGroup');
+                }
             } else {
                 result.push('rowGroup');
             }
