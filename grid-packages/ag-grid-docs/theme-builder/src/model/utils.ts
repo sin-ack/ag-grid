@@ -32,7 +32,7 @@ export const kebabCaseToTitleCase = (variableName: string, prefix?: string) => {
 export const logErrorMessage = (message: string, error?: unknown) => {
   if (error) {
     // eslint-disable-next-line no-console
-    console.error(error, message);
+    console.error(message, error);
   } else {
     // eslint-disable-next-line no-console
     console.error(message);

@@ -6,7 +6,7 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import 'ag-grid-enterprise';
 import { useRenderedThemeCss } from 'atoms/renderedTheme';
 import { Inspector } from 'components/inspector/Inspector';
-import { memo } from 'react';
+import { memo, useLayoutEffect, useState } from 'react';
 import { Tooltip } from 'react-tooltip';
 import { CopyButton } from './CopyButton';
 import { GridPreview } from './GridPreview';
@@ -15,27 +15,37 @@ import { ParentThemeMenu } from './ParentThemeMenu';
 export const RootContainer = memo(() => {
   const renderedThemeCss = useRenderedThemeCss();
 
+  const [hasRenderedStyles, setHasRenderedStyles] = useState(false);
+
+  useLayoutEffect(() => {
+    setHasRenderedStyles(true);
+  }, []);
+
   return (
     <Container>
       <style>{renderedThemeCss}</style>
-      <TopRow>
-        <ParentThemeMenu />
-        <CopyButton payload={renderedThemeCss} label="Copy CSS" />
-      </TopRow>
-      <Columns>
-        <LeftColumn>
-          <Inspector />
-        </LeftColumn>
-        <RightColumn>
-          <GridPreview />
-        </RightColumn>
-      </Columns>
-      <Tooltip
-        id="theme-builder-tooltip"
-        className="tooltip"
-        place="top"
-        anchorSelect="[data-tooltip-content]"
-      />
+      {hasRenderedStyles && (
+        <>
+          <TopRow>
+            <ParentThemeMenu />
+            <CopyButton payload={renderedThemeCss} label="Copy CSS" />
+          </TopRow>
+          <Columns>
+            <LeftColumn>
+              <Inspector />
+            </LeftColumn>
+            <RightColumn>
+              <GridPreview />
+            </RightColumn>
+          </Columns>
+          <Tooltip
+            id="theme-builder-tooltip"
+            className="tooltip"
+            place="top"
+            anchorSelect="[data-tooltip-content]"
+          />
+        </>
+      )}
     </Container>
   );
 });

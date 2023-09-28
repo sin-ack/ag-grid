@@ -56,9 +56,7 @@ const GridPreview = () => {
     .join(';');
 
   useEffect(() => {
-    if (api) {
-      currentFeature?.show?.(api);
-    }
+    if (api) currentFeature?.show?.(api);
   }, [currentFeature, api]);
 
   return (
@@ -85,7 +83,6 @@ const GridPreview = () => {
         columnDefs={columnDefs}
         gridOptions={gridOptions}
       />
-      {/* <pre key={rebuildKey}>{renderedThemeToCss(renderedTheme)}</pre> */}
     </Wrapper>
   );
 };

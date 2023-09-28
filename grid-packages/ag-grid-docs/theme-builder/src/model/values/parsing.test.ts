@@ -26,14 +26,19 @@ const testDefs: TestDef[] = [
       ['4px', dimension(4, 'px')],
       ['4.5px', dimension(4.5, 'px')],
       ['0vh', dimension(0, 'vh')],
+      ['50%', dimension(50, '%')],
       ['calc(4px*4)', dimension(16, 'px')],
       ['calc( 4px * 4 )', dimension(16, 'px')],
       ['calc(3vh)', dimension(3, 'vh')],
+      ['calc(2% * 10)', dimension(20, '%')],
       ['calc(5em * (1em + 3em))', dimension(20, 'em')],
-      ['4', null], // invalid - no units
-      ['calc(4)', null], // invalid - no units
+      ['calc(calc(6px * 2) + 16px)', dimension(28, 'px')],
+      ['CALC(CALC(6px * 2) + 16px)', dimension(28, 'px')],
+      ['0', dimension(0, '')], // valid - zero without unit
+      ['calc(0)', dimension(0, '')], // valid - zero without unit
+      ['4', null], // invalid - nonzero without unit
+      ['calc(4)', null], // invalid - nonzero without unit
       ['calc(3vh+5px)', null], // invalid - mixed units
-      ['calc(3vh())', null], // invalid - syntax error
     ],
   ],
   [

@@ -14,3 +14,17 @@
 @include meta.load-css('../../documentation/src/design-system/elements/table');
 @include meta.load-css('../../documentation/src/design-system/components/containers');
 @include meta.load-css('../../documentation/src/design-system/components/code');
+
+html {
+  color-scheme: light;
+}
+
+html[data-dark-mode='true'] {
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-dark-mode='false']) {
+    color-scheme: dark;
+  }
+}
