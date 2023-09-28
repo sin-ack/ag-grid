@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
 
 export const InputElement = styled('input')`
-  border: solid 2px #ddd;
-  border-radius: 3px;
   height: 40px;
 
   &:focus,
@@ -11,6 +9,6 @@ export const InputElement = styled('input')`
   }
 
   &.is-error {
-    border-color: #a00 !important;
+    border-color: var(--input-error-color) !important;
   }
 `;

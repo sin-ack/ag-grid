@@ -50,7 +50,7 @@ const Button = styled('button')`
   justify-content: center;
 
   &.is-copied {
-    background-color: #79cd70 !important;
+    background-color: var(--green-600) !important;
   }
 `;
 

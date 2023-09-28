@@ -23,8 +23,9 @@ export const DimensionInput: Input<'dimension'> = (props) => {
     if (parsed.ok && parsed.result !== props.value.number) {
       props.onValueChange(dimension(parsed.result, props.value.units));
     }
-    if (!parsed.ok && parsed.error !== props.error) {
-      props.onErrorChange(parsed.error);
+    const error = parsed.ok ? null : parsed.error;
+    if (error !== props.error) {
+      props.onErrorChange(error);
     }
   }, [inputValue]);
 

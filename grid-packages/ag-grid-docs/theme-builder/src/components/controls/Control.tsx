@@ -86,7 +86,7 @@ const Error = styled('div')`
   width: 100%;
   font-size: 0.8em;
   margin-top: 8px;
-  color: #a00;
+  color: var(--input-error-color);
 `;
 
 const DocIcon = styled(Help)`

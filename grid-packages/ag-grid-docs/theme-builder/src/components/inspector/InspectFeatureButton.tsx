@@ -26,6 +26,6 @@ const Button = styled('button')`
 
   &:hover,
   &:active {
-    background-color: #eee !important;
+    background-color: var(--neutral-200) !important;
   }
 `;
