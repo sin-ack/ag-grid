@@ -1,5 +1,5 @@
 import { indexBy } from './utils';
-import { allVariableNames } from './variables';
+import { allVariableNames } from './variableInfo';
 
 export type Theme = {
   name: string;

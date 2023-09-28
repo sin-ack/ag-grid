@@ -3,7 +3,7 @@ import { Feature, getFeatureOrThrow } from 'model/features';
 import { Theme, alpineDarkTheme, alpineTheme, getThemeOrThrow } from 'model/themes';
 import { logErrorMessage, mapPresentObjectValues } from 'model/utils';
 import { VariableValues, parseCssString, valueToCss } from 'model/values';
-import { getVariableInfoOrThrow } from 'model/variables';
+import { getVariableInfoOrThrow } from 'model/variableInfo';
 import { throttle } from 'throttle-debounce';
 import { enabledFeaturesAtom } from './enabledFeatures';
 import { parentThemeAtom } from './parentTheme';

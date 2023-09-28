@@ -2,7 +2,8 @@ import { expect, test } from 'vitest';
 import { Feature } from './features';
 import { renderCSS } from './render';
 import { Theme } from './themes';
-import { color, dimension } from './values';
+import { color } from './values/color';
+import { dimension } from './values/dimension';
 
 const testTheme: Theme = {
   name: 'ag-theme-derived',

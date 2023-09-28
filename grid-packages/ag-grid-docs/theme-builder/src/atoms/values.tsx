@@ -1,6 +1,6 @@
 import { atom, useAtom, useAtomValue } from 'jotai';
 import { Value, VariableValues } from 'model/values';
-import { allVariableNames } from 'model/variables';
+import { allVariableNames } from 'model/variableInfo';
 
 const valueAtoms = Object.fromEntries(
   allVariableNames.map((variableName) => [variableName, atom<Value | null>(null)]),

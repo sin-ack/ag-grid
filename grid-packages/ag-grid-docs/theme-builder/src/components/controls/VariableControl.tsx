@@ -6,12 +6,17 @@ import { withErrorBoundary } from 'components/ErrorBoundary';
 import { Control } from 'components/controls/Control';
 import { Feature } from 'model/features';
 import { kebabCaseToTitleCase } from 'model/utils';
-import { defaultValueForType } from 'model/values';
+import { Value, ValueType } from 'model/values';
+import { border } from 'model/values/border';
+import { borderStyle } from 'model/values/borderStyle';
+import { color } from 'model/values/color';
+import { dimension } from 'model/values/dimension';
 import { getVariableDefault } from 'model/variableDefaults';
-import { getVariableInfoOrThrow } from 'model/variables';
+import { getVariableInfoOrThrow } from 'model/variableInfo';
 import { ReactElement, memo, useState } from 'react';
 import { DefaultValue } from './DefaultValue';
 import { BorderInput } from './inputs/BorderInput';
+import { BorderStyleInput } from './inputs/BorderStyleInput';
 import { ColorInput } from './inputs/ColorInput';
 import { DimensionInput } from './inputs/DimensionInput';
 
@@ -30,7 +35,7 @@ const VariableControl = ({ variableName, feature }: VariableControlProps): JSX.E
   const [error, setError] = useState<string | null>(null);
   const [shouldFocus, setShouldFocus] = useState(false);
 
-  if (info.hideEditor) return <></>;
+  if (feature.suppressEditorFor?.has(variableName)) return <></>;
 
   const label = kebabCaseToTitleCase(variableName, feature.commonVariablePrefix || '--ag-');
 
@@ -96,6 +101,18 @@ const VariableControl = ({ variableName, feature }: VariableControlProps): JSX.E
             initialFocus={shouldFocus}
           />
         );
+      case 'borderStyle':
+        if (info.type !== 'borderStyle') throw new Error(mismatchError);
+        return (
+          <BorderStyleInput
+            value={value}
+            info={info}
+            error={error}
+            onErrorChange={setError}
+            onValueChange={setValue}
+            initialFocus={shouldFocus}
+          />
+        );
     }
   };
 
@@ -115,3 +132,16 @@ const VariableControl = ({ variableName, feature }: VariableControlProps): JSX.E
 
 const VariableControlWrapped = memo(withErrorBoundary(VariableControl));
 export { VariableControlWrapped as VariableControl };
+
+const defaultValueForType = (type: ValueType): Value => {
+  switch (type) {
+    case 'color':
+      return color('#999');
+    case 'dimension':
+      return dimension(1, 'px');
+    case 'border':
+      return border('solid', dimension(1, 'px'), color('#999'));
+    case 'borderStyle':
+      return borderStyle('solid');
+  }
+};

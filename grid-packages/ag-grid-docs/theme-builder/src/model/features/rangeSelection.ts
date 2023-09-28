@@ -14,6 +14,11 @@ export const rangeSelectionFeature: Feature = {
     '--ag-range-selection-background-color-4',
     '--ag-range-selection-highlight-color',
   ],
+  suppressEditorFor: new Set([
+    '--ag-range-selection-background-color-2',
+    '--ag-range-selection-background-color-3',
+    '--ag-range-selection-background-color-4',
+  ]),
   gridOptions: {
     enableRangeSelection: true,
   },

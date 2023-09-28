@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import { Value, colorIsDarkish, valueToCss } from 'model/values';
+import { Value, valueToCss } from 'model/values';
+import { colorIsDarkish } from 'model/values/color';
 
 export type DefaultValueProps = {
   value: Value | null;

@@ -1,9 +1,9 @@
 import { ResultOrError, clamp } from 'model/utils';
-import { dimension } from 'model/values';
-import { DimensionVariableInfo } from 'model/variables';
+import { DimensionVariableInfo } from 'model/variableInfo';
 import { useEffect, useRef, useState } from 'react';
 import { Input } from './Input';
 
+import { dimension } from 'model/values/dimension';
 import { InputElement } from './InputElement';
 
 export const DimensionInput: Input<'dimension'> = (props) => {

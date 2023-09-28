@@ -1,5 +1,7 @@
-import { BorderValue, color, dimension } from 'model/values';
-import { ColorVariableInfo, DimensionVariableInfo } from 'model/variables';
+import { BorderValue } from 'model/values/border';
+import { color } from 'model/values/color';
+import { dimension } from 'model/values/dimension';
+import { ColorVariableInfo, DimensionVariableInfo } from 'model/variableInfo';
 import { useRef } from 'react';
 import { ColorInput } from './ColorInput';
 import { DimensionInput } from './DimensionInput';
@@ -17,8 +19,6 @@ export const BorderInput: Input<'border'> = (props) => {
   const onChange = (change: Partial<BorderValue>) => {
     props.onValueChange({ ...props.value, ...change });
   };
-
-  console.log(props);
 
   return (
     <>

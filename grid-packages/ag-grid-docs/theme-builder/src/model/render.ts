@@ -1,7 +1,8 @@
 import { Feature } from './features';
 import { Theme, getThemeChain } from './themes';
 import { mapPresentObjectValues } from './utils';
-import { VariableValues, colorWithAlpha, colorWithSelfOverlay, valueToCss } from './values';
+import { VariableValues, valueToCss } from './values';
+import { colorWithAlpha, colorWithSelfOverlay } from './values/color';
 
 export type RenderedTheme = {
   themeName: string;

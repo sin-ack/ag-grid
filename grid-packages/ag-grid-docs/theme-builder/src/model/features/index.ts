@@ -8,6 +8,7 @@ export type Feature = {
   name: string;
   displayName: string;
   variableNames: string[];
+  suppressEditorFor?: Set<string>;
   commonVariablePrefix?: string;
   alwaysEnabled?: boolean;
   gridOptions?: Partial<GridOptions>;

@@ -1,9 +1,9 @@
-import { color } from 'model/values/color';
+import { BorderStyle, borderStyle } from 'model/values/borderStyle';
 import { useEffect, useRef } from 'react';
 import { Input } from './Input';
 import { InputElement } from './InputElement';
 
-export const ColorInput: Input<'color'> = ({ value, onValueChange, initialFocus }) => {
+export const BorderStyleInput: Input<'borderStyle'> = ({ value, onValueChange, initialFocus }) => {
   const initialFocusRef = useRef(initialFocus);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -18,8 +18,10 @@ export const ColorInput: Input<'color'> = ({ value, onValueChange, initialFocus 
     <InputElement
       ref={inputRef}
       type="color"
-      value={value.hex}
-      onChange={(e) => onValueChange(color(e.target.value))}
+      value={value.lineStyle}
+      onChange={(e) => {
+        onValueChange(borderStyle(e.target.value as BorderStyle));
+      }}
     />
   );
 };

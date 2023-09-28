@@ -1,6 +1,6 @@
 import { logErrorMessage } from './utils';
 import { Value, parseCssString } from './values';
-import { allVariableNames, getVariableInfo } from './variables';
+import { allVariableNames, getVariableInfo } from './variableInfo';
 
 const themeVariableDefaults: Record<string, Record<string, Value | undefined>> = {};
 
