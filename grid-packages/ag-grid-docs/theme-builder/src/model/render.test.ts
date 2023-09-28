@@ -1,7 +1,10 @@
 import { expect, test } from 'vitest';
 import { Feature } from './features';
-import { renderCSS } from './render';
+import { renderCSS, renderedThemeToCss } from './render';
 import { Theme } from './themes';
+import { Value, ValueType } from './values';
+import { border } from './values/border';
+import { borderStyle } from './values/borderStyle';
 import { color } from './values/color';
 import { dimension } from './values/dimension';
 
@@ -108,4 +111,26 @@ test(renderCSS, () => {
           --blend-destination-should-work-in-base: #aaaaaa0d;
       }"
     `);
+});
+
+test(renderedThemeToCss, () => {
+  const oneOfEachType: Record<ValueType, Value> = {
+    color: color('#f08'),
+    dimension: dimension(8, 'em'),
+    border: border('solid', dimension(1, 'px'), color('#fff')),
+    borderStyle: borderStyle('double'),
+  };
+  expect(
+    renderedThemeToCss({
+      themeName: 'my-theme',
+      values: oneOfEachType,
+    }),
+  ).toMatchInlineSnapshot(`
+    ".my-theme {
+        color: #ff0088;
+        dimension: 8em;
+        border: solid 1px #ffffff;
+        borderStyle: double;
+    }"
+  `);
 });

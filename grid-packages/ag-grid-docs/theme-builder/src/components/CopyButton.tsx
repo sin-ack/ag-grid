@@ -43,7 +43,7 @@ export const CopyButton = ({ label, payload }: CopyButtonProps) => {
   );
 };
 
-const Button = styled('div')`
+const Button = styled('button')`
   transition: background-color 0.4s;
   position: relative;
   display: flex;

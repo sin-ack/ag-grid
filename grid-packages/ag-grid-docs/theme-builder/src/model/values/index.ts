@@ -1,5 +1,5 @@
 import { BorderValue, borderToCss, parseCssBorder } from './border';
-import { BorderStyleValue, parseCssBorderStyle } from './borderStyle';
+import { BorderStyleValue, borderStyleToCss, parseCssBorderStyle } from './borderStyle';
 import { ColorValue, colorToCss, parseCssColor } from './color';
 import { DimensionValue, dimensionToCss, parseCssDimension } from './dimension';
 
@@ -38,6 +38,6 @@ export const valueToCss = (value: Value): string => {
     case 'border':
       return borderToCss(value);
     case 'borderStyle':
-      return String(value);
+      return borderStyleToCss(value);
   }
 };

@@ -31,3 +31,5 @@ export const isValidBorderStyle = (value: string): value is BorderStyle =>
 export const parseCssBorderStyle = (css: string): BorderStyleValue | null => {
   return isValidBorderStyle(css) ? borderStyle(css) : null;
 };
+
+export const borderStyleToCss = ({ lineStyle }: BorderStyleValue): string => lineStyle;

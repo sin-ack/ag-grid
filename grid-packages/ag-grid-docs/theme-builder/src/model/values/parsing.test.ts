@@ -4,7 +4,7 @@ import { borderStyle, parseCssBorderStyle } from './borderStyle';
 import { color, parseCssColor } from './color';
 import { dimension, parseCssDimension } from './dimension';
 
-type TestDef = [(value: string) => unknown, [string, unknown][]];
+type TestDef = [parser: (value: string) => unknown, [input: string, expectedOutput: unknown][]];
 
 const testDefs: TestDef[] = [
   [
@@ -16,6 +16,8 @@ const testDefs: TestDef[] = [
       ['#abC8', color('#aabbcc88')],
       ['rgb(0, 255, 0)', color('#00ff00')],
       ['rgba(0, 255, 0, 0.5)', color('#00ff0080')],
+      ['hsl(120, 100%, 50%)', color('#00ff00')],
+      ['hsla(120, 100%, 50%, 0.5)', color('#00ff0080')],
     ],
   ],
   [
@@ -38,13 +40,14 @@ const testDefs: TestDef[] = [
     splitCssList,
     [
       ['a', ['a']],
-      ['a beta', ['a', 'beta']],
-      [' a  beta ', ['a', 'beta']],
-      ['a beta chomp', ['a', 'beta', 'chomp']],
+      ['a b', ['a', 'b']],
+      ['  a   b  ', ['a', 'b']],
+      [' alpha  beta ', ['alpha', 'beta']],
+      ['alpha beta charlie', ['alpha', 'beta', 'charlie']],
       ['calc( var(--foo) * (3 + 5) )', ['calc( var(--foo) * (3 + 5) )']],
       ['a calc( var(--foo) * (3 + 5) ) c', ['a', 'calc( var(--foo) * (3 + 5) )', 'c']],
       ['calc( var(--foo) ) calc( var(--bar) )', ['calc( var(--foo) )', 'calc( var(--bar) )']],
-      ['(3 + 5) ( 4 )', ['(3 + 5)', '( 4 )']],
+      ['(3 + 5) ( 4 ) foo()', ['(3 + 5)', '( 4 )', 'foo()']],
     ],
   ],
   [

@@ -4,10 +4,8 @@ import { AgGridReact } from 'ag-grid-react';
 import { useCurrentFeature } from 'atoms/currentFeature';
 import { useEnabledFeatures } from 'atoms/enabledFeatures';
 import { useParentTheme } from 'atoms/parentTheme';
-import { useRenderedTheme } from 'atoms/renderedTheme';
 import { useVariableValues } from 'atoms/values';
 import { withErrorBoundary } from 'components/ErrorBoundary';
-import { renderedThemeToCss } from 'model/render';
 import { isNotNull } from 'model/utils';
 import { valueToCss } from 'model/values';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
@@ -47,8 +45,6 @@ const GridPreview = () => {
     return options;
   }, [features]);
 
-  const renderedTheme = useRenderedTheme();
-
   const featureState = useRef<Record<string, unknown>>({});
 
   const rebuildKey = variablesRequiringRebuild
@@ -67,7 +63,6 @@ const GridPreview = () => {
 
   return (
     <Wrapper className={parentTheme.name} style={{ width: '100%', height: '100%' }}>
-      <style>{renderedThemeToCss(renderedTheme)}</style>
       <AgGridReact
         onFirstDataRendered={({ api }) => {
           setApi(api);

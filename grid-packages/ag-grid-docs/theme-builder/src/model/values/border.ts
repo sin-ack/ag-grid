@@ -1,4 +1,10 @@
-import { BorderStyle, BorderStyleValue, borderStyle, parseCssBorderStyle } from './borderStyle';
+import {
+  BorderStyle,
+  BorderStyleValue,
+  borderStyle,
+  borderStyleToCss,
+  parseCssBorderStyle,
+} from './borderStyle';
 import { ColorValue, colorToCss, parseCssColor } from './color';
 import { DimensionValue, dimensionToCss, parseCssDimension } from './dimension';
 
@@ -22,13 +28,16 @@ export const border = (
 };
 
 export const borderToCss = ({ style, width, color }: BorderValue) =>
-  [style ? style : '', width ? dimensionToCss(width) : '', color ? colorToCss(color) : '']
+  [
+    style ? borderStyleToCss(style) : '',
+    width ? dimensionToCss(width) : '',
+    color ? colorToCss(color) : '',
+  ]
     .filter(Boolean)
     .join(' ');
 
 export const parseCssBorder = (css: string): BorderValue | null => {
   const border: BorderValue = { type: 'border' };
-  // for (const word of splitCssList(css)) {
   for (const word of splitCssList(css)) {
     const style = parseCssBorderStyle(word);
     if (style != null) {
@@ -50,6 +59,8 @@ export const parseCssBorder = (css: string): BorderValue | null => {
   return border;
 };
 
+// parse a css space-delimited list, which is harder than string.split(" ")
+// because whitespace is allowed inside CSS function calls
 export const splitCssList = (input: string): string[] => {
   input = input.trim();
   const parts: string[] = [];

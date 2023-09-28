@@ -4,17 +4,23 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 import 'ag-grid-enterprise';
+import { useRenderedThemeCss } from 'atoms/renderedTheme';
 import { Inspector } from 'components/inspector/Inspector';
 import { memo } from 'react';
 import { Tooltip } from 'react-tooltip';
+import { CopyButton } from './CopyButton';
 import { GridPreview } from './GridPreview';
 import { ParentThemeMenu } from './ParentThemeMenu';
 
 export const RootContainer = memo(() => {
+  const renderedThemeCss = useRenderedThemeCss();
+
   return (
     <Container>
+      <style>{renderedThemeCss}</style>
       <TopRow>
         <ParentThemeMenu />
+        <CopyButton payload={renderedThemeCss} label="Copy CSS" />
       </TopRow>
       <Columns>
         <LeftColumn>
@@ -45,7 +51,10 @@ const Container = styled('div')`
   }
 `;
 
-const TopRow = styled('div')``;
+const TopRow = styled('div')`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const Columns = styled('div')`
   display: flex;

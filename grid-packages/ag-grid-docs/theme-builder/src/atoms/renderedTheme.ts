@@ -1,5 +1,5 @@
 import { atom, useAtomValue } from 'jotai';
-import { renderTheme } from 'model/render';
+import { renderTheme, renderedThemeToCss } from 'model/render';
 import { enabledFeaturesAtom } from './enabledFeatures';
 import { parentThemeAtom } from './parentTheme';
 import { valuesAtom } from './values';
@@ -16,3 +16,7 @@ export const useRenderedTheme = () => useAtomValue(renderedThemeAtom);
 
 export const useRenderedVariable = (variableName: string) =>
   useRenderedTheme().values[variableName];
+
+export const renderedThemeCssAtom = atom((get) => renderedThemeToCss(get(renderedThemeAtom)));
+
+export const useRenderedThemeCss = () => useAtomValue(renderedThemeCssAtom);
