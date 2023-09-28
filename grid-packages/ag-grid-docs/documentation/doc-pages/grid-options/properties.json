@@ -890,7 +890,7 @@
         "groupLockGroupColumns": {
             "more": {
                 "name": "Group Lock Group Columns",
-                "url": "/group-lock-group-columns"
+                "url": "/grouping-locking-group-columns"
             }
         },
         "groupIncludeFooter": {
