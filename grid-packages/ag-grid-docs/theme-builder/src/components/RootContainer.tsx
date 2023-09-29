@@ -23,32 +23,34 @@ export const RootContainer = memo(() => {
   }, [renderedThemeCss]);
 
   return (
-    <Container>
+    <>
       <style>{renderedThemeCss}</style>
       <div className={parentTheme.name} id="theme-builder-defaults-computation" />
-      {hasRenderedStyles && (
-        <>
-          <TopRow>
-            <ParentThemeMenu />
-            <CopyButton payload={renderedThemeCss} label="Copy CSS" />
-          </TopRow>
-          <Columns>
-            <LeftColumn>
-              <Inspector />
-            </LeftColumn>
-            <RightColumn>
-              <GridPreview />
-            </RightColumn>
-          </Columns>
-          <Tooltip
-            id="theme-builder-tooltip"
-            className="tooltip"
-            place="top"
-            anchorSelect="[data-tooltip-content]"
-          />
-        </>
-      )}
-    </Container>
+      <Container>
+        {hasRenderedStyles && (
+          <>
+            <TopRow>
+              <ParentThemeMenu />
+              <CopyButton payload={renderedThemeCss} label="Copy CSS" />
+            </TopRow>
+            <Columns>
+              <LeftColumn>
+                <Inspector />
+              </LeftColumn>
+              <RightColumn>
+                <GridPreview />
+              </RightColumn>
+            </Columns>
+            <Tooltip
+              id="theme-builder-tooltip"
+              className="tooltip"
+              place="top"
+              anchorSelect="[data-tooltip-content]"
+            />
+          </>
+        )}
+      </Container>
+    </>
   );
 });
 
