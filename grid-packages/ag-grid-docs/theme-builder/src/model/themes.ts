@@ -71,42 +71,6 @@ export const alpineTheme: Theme = {
   extends: baseTheme,
   addedVariables: ['--ag-alpine-active-color'],
   colorBlends: [
-    // TODO these blends that just copy one value to another are required to get
-    // defaults working properly, e.g. if you set alpine-active-color then you
-    // want the app to correctly pick up that range-selection-border-color has a
-    // new default. It would be preferable to get the browser to tell us this,
-    // which would require injecting the current styles in getVariableDefaults.
-    // And if I'm doing that, I could just use the css color-mix function for
-    // defaults and remove all the alpha blends too
-    {
-      destination: '--ag-checkbox-background-color',
-      source: '--ag-background-color',
-    },
-    {
-      destination: '--ag-checkbox-checked-color',
-      source: '--ag-alpine-active-color',
-    },
-    {
-      destination: '--ag-range-selection-border-color',
-      source: '--ag-alpine-active-color',
-    },
-    {
-      destination: '--ag-secondary-foreground-color',
-      source: '--ag-foreground-color',
-    },
-    {
-      destination: '--ag-input-border-color',
-      source: '--ag-border-color',
-    },
-    {
-      destination: '--ag-input-border-color-invalid',
-      source: '--ag-invalid-color',
-    },
-    {
-      destination: '--ag-input-focus-box-shadow',
-      source: '--ag-input-focus-border-color',
-    },
-
     {
       destination: '--ag-subheader-toolbar-background-color',
       source: '--ag-subheader-background-color',

@@ -1,16 +1,19 @@
+import { borderStyleDefaultValue, colorDefaultValue, dimensionDefaultValue } from 'model/values';
 import { BorderValue } from 'model/values/border';
-import { color } from 'model/values/color';
-import { dimension } from 'model/values/dimension';
-import { ColorVariableInfo, DimensionVariableInfo } from 'model/variableInfo';
+import {
+  BorderStyleVariableInfo,
+  ColorVariableInfo,
+  DimensionVariableInfo,
+} from 'model/variableInfo';
 import { useRef } from 'react';
+import { BorderStyleInput } from './BorderStyleInput';
 import { ColorInput } from './ColorInput';
 import { DimensionInput } from './DimensionInput';
 import { Input } from './Input';
 
 const borderColorInfo: ColorVariableInfo = { type: 'color' };
-const defaultBorderColor = color('#999');
 const borderWidthInfo: DimensionVariableInfo = { type: 'dimension', min: 0, max: 50, step: 1 };
-const defaultBorderWidth = dimension(1, 'px');
+const borderStyleInfo: BorderStyleVariableInfo = { type: 'borderStyle' };
 
 export const BorderInput: Input<'border'> = (props) => {
   const propsRef = useRef(props);
@@ -22,19 +25,19 @@ export const BorderInput: Input<'border'> = (props) => {
 
   return (
     <>
-      {/* {props.info.style && (
-        <ColorInput
-          info={borderColorInfo}
-          value={props.value.color || defaultColor}
-          onValueChange={(color) => onChange({ color })}
+      {props.info.style && (
+        <BorderStyleInput
+          info={borderStyleInfo}
+          value={props.value.style || borderStyleDefaultValue}
+          onValueChange={(style) => onChange({ style })}
           error={null}
           onErrorChange={props.onErrorChange}
         />
-      )} */}
+      )}
       {props.info.width && (
         <DimensionInput
           info={borderWidthInfo}
-          value={props.value.width || defaultBorderWidth}
+          value={props.value.width || dimensionDefaultValue}
           onValueChange={(width) => onChange({ width })}
           error={null}
           onErrorChange={props.onErrorChange}
@@ -43,7 +46,7 @@ export const BorderInput: Input<'border'> = (props) => {
       {props.info.color && (
         <ColorInput
           info={borderColorInfo}
-          value={props.value.color || defaultBorderColor}
+          value={props.value.color || colorDefaultValue}
           onValueChange={(color) => onChange({ color })}
           error={null}
           onErrorChange={props.onErrorChange}

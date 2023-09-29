@@ -1,7 +1,6 @@
-import { BorderStyle, borderStyle } from 'model/values/borderStyle';
+import { BorderStyle, allBorderStyles, borderStyle } from 'model/values/borderStyle';
 import { useEffect, useRef } from 'react';
 import { Input } from './Input';
-import { InputElement } from './InputElement';
 
 export const BorderStyleInput: Input<'borderStyle'> = ({ value, onValueChange, initialFocus }) => {
   const initialFocusRef = useRef(initialFocus);
@@ -15,13 +14,23 @@ export const BorderStyleInput: Input<'borderStyle'> = ({ value, onValueChange, i
   }, []);
 
   return (
-    <InputElement
-      ref={inputRef}
-      type="color"
+    <select
       value={value.lineStyle}
       onChange={(e) => {
         onValueChange(borderStyle(e.target.value as BorderStyle));
       }}
-    />
+    >
+      {options}
+    </select>
   );
 };
+
+const options = (
+  <>
+    {allBorderStyles.map((style) => (
+      <option key={style} value={style}>
+        {style}
+      </option>
+    ))}
+  </>
+);

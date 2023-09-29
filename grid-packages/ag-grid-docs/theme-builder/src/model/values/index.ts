@@ -1,7 +1,13 @@
-import { BorderValue, borderToCss, parseCssBorder } from './border';
-import { BorderStyleValue, borderStyleToCss, parseCssBorderStyle } from './borderStyle';
-import { ColorValue, colorToCss, parseCssColor } from './color';
-import { DimensionValue, dimensionToCss, parseCssDimension } from './dimension';
+import { getVariableInfoOrThrow } from 'model/variableInfo';
+import { BorderValue, border, borderToCss, parseCssBorder } from './border';
+import {
+  BorderStyleValue,
+  borderStyle,
+  borderStyleToCss,
+  parseCssBorderStyle,
+} from './borderStyle';
+import { ColorValue, color, colorToCss, parseCssColor } from './color';
+import { DimensionValue, dimension, dimensionToCss, parseCssDimension } from './dimension';
 
 export type ValueType = 'color' | 'dimension' | 'border' | 'borderStyle';
 
@@ -39,5 +45,24 @@ export const valueToCss = (value: Value): string => {
       return borderToCss(value);
     case 'borderStyle':
       return borderStyleToCss(value);
+  }
+};
+
+export const colorDefaultValue = color('#999');
+export const dimensionDefaultValue = dimension(1, 'px');
+export const borderDefaultValue = border('solid', dimension(1, 'px'), color('#999'));
+export const borderStyleDefaultValue = borderStyle('solid');
+
+export const getVariableDefaultValue = (variableName: string): Value => {
+  const info = getVariableInfoOrThrow(variableName);
+  switch (info.type) {
+    case 'color':
+      return colorDefaultValue;
+    case 'dimension':
+      return dimensionDefaultValue;
+    case 'border':
+      return borderDefaultValue;
+    case 'borderStyle':
+      return borderStyleDefaultValue;
   }
 };

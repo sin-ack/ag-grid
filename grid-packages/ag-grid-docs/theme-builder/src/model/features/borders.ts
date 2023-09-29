@@ -10,5 +10,8 @@ export const bordersFeature: Feature = {
     '--ag-borders-critical',
     '--ag-borders-secondary',
     '--ag-secondary-border-color',
+    '--ag-row-border-style',
+    '--ag-row-border-width',
+    '--ag-row-border-color',
   ],
 };
