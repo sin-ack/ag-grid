@@ -12,18 +12,15 @@ export type RenderedTheme = {
 type RenderArgs = { theme: Theme; features: Feature[]; values: VariableValues };
 
 export const renderTheme = (state: RenderArgs): RenderedTheme => {
-  const values: VariableValues = {};
-
   const themes = getThemeChain(state.theme);
 
   const allowedVariables = new Set(themes.flatMap((theme) => theme.addedVariables));
 
-  for (const feature of state.features) {
-    for (const variable of feature.variableNames) {
-      const value = state.values[variable];
-      if (value && allowedVariables.has(variable)) {
-        values[variable] = value;
-      }
+  const values: VariableValues = {};
+  for (const variable in state.values) {
+    const value = state.values[variable];
+    if (value && allowedVariables.has(variable)) {
+      values[variable] = value;
     }
   }
 

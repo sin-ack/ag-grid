@@ -71,6 +71,36 @@ export const alpineTheme: Theme = {
   extends: baseTheme,
   addedVariables: ['--ag-alpine-active-color'],
   colorBlends: [
+    // TODO The alpha and copy-only color blends can all be removed once AG-9445
+    // (css color blending) is implemented
+    {
+      destination: '--ag-checkbox-background-color',
+      source: '--ag-background-color',
+    },
+    {
+      destination: '--ag-checkbox-checked-color',
+      source: '--ag-alpine-active-color',
+    },
+    {
+      destination: '--ag-range-selection-border-color',
+      source: '--ag-alpine-active-color',
+    },
+    {
+      destination: '--ag-secondary-foreground-color',
+      source: '--ag-foreground-color',
+    },
+    {
+      destination: '--ag-input-border-color',
+      source: '--ag-border-color',
+    },
+    {
+      destination: '--ag-input-border-color-invalid',
+      source: '--ag-invalid-color',
+    },
+    {
+      destination: '--ag-input-focus-box-shadow',
+      source: '--ag-input-focus-border-color',
+    },
     {
       destination: '--ag-subheader-toolbar-background-color',
       source: '--ag-subheader-background-color',

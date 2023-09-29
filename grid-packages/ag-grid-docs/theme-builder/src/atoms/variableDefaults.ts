@@ -7,36 +7,22 @@ import { dimension } from 'model/values/dimension';
 import { getVariableInfoOrThrow } from 'model/variableInfo';
 import { useCallback } from 'react';
 
-const computedValueGetterAtom = atom<ComputedValueGetter | null>(null);
-
 export const useGetVariableDefault = () => {
   const valueGetter = useAtomValue(computedValueGetterAtom);
 
   return useCallback(
-    (variableName: string) => {
-      if (!valueGetter) {
-        throw new Error(
-          `${useGetVariableDefault.name} used before ${useSetVariableDefaultsElement.name}`,
-        );
-      }
-
-      return (
-        valueGetter.getComputedValue(variableName) ||
-        defaultValueIfNoneSpecifiedInTheme(variableName)
-      );
-    },
+    (variableName: string) =>
+      valueGetter.getComputedValue(variableName) ||
+      defaultValueIfNoneSpecifiedInTheme(variableName),
     [valueGetter],
   );
 };
 
-export const useSetVariableDefaultsElement = () => {
+export const useResetVariableDefaults = () => {
   const set = useSetAtom(computedValueGetterAtom);
-  return useCallback(
-    (element: HTMLElement) => {
-      set(new ComputedValueGetter(element));
-    },
-    [set],
-  );
+  return useCallback(() => {
+    set(new ComputedValueGetter());
+  }, [set]);
 };
 
 const defaultValueIfNoneSpecifiedInTheme = (variableName: string): Value => {
@@ -53,20 +39,29 @@ const defaultValueIfNoneSpecifiedInTheme = (variableName: string): Value => {
   }
 };
 
+const defaultsElementId = 'theme-builder-defaults-computation';
 class ComputedValueGetter {
   private cache: Record<string, Value | null | undefined> = {};
-  private styleMap: StylePropertyMapReadOnly;
-  constructor(element: HTMLElement) {
-    this.styleMap = element.computedStyleMap();
-  }
+  private styleMap?: StylePropertyMapReadOnly;
 
   getComputedValue(variableName: string): Value | null {
+    let styleMap = this.styleMap;
+    if (!styleMap) {
+      const element = document.getElementById(defaultsElementId);
+      if (!element) {
+        throw new Error(`${ComputedValueGetter.name} created before #${defaultsElementId} element`);
+      }
+      this.styleMap = styleMap = element.computedStyleMap();
+    }
+
     const cachedValue = this.cache[variableName];
     if (cachedValue) return cachedValue;
 
     const info = getVariableInfoOrThrow(variableName);
-    const cssValue = this.styleMap.get(variableName);
+    const cssValue = styleMap.get(variableName);
     if (!cssValue) return null;
     return (this.cache[variableName] = parseCssString(info.type, String(cssValue)));
   }
 }
+
+const computedValueGetterAtom = atom<ComputedValueGetter>(new ComputedValueGetter());

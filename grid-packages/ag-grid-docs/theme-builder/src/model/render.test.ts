@@ -70,17 +70,7 @@ const testTheme: Theme = {
 const testFeature: Feature = {
   name: 'source-destination',
   displayName: 'Source Destination',
-  variableNames: [
-    '--plain-variable',
-    '--blend-source',
-    '--blend-destination-should-apply-alpha-0.9',
-    '--variable-in-feature-but-not-theme',
-    '--variable-in-base-theme',
-    '--blend-destination-should-be-overridden-in-base',
-    '--provided-value-should-override-blend',
-    '--blend-destination-should-overlay-twice',
-    '--blend-destination-should-copy-value',
-  ],
+  variableNames: [],
 };
 
 test(renderCSS, () => {
@@ -91,9 +81,7 @@ test(renderCSS, () => {
         '--plain-variable': dimension(4, 'px'),
         '--blend-source': color('#aaaaaa80'),
         '--provided-value-should-override-blend': color('#bbb'),
-        '--variable-not-in-any-theme-or-feature': color('#aaa'),
-        '--variable-in-theme-but-not-feature': color('#aaa'),
-        '--variable-in-feature-but-not-theme': color('#aaa'),
+        '--variable-not-in-any-theme': color('#aaa'),
         '--variable-in-base-theme': color('#aaa'),
       },
       features: [testFeature],
@@ -102,8 +90,8 @@ test(renderCSS, () => {
       ".ag-theme-derived {
           --plain-variable: 4px;
           --blend-source: #aaaaaa80;
-          --variable-in-base-theme: #aaaaaa;
           --provided-value-should-override-blend: #bbbbbb;
+          --variable-in-base-theme: #aaaaaa;
           --blend-destination-should-copy-value: #aaaaaa80;
           --blend-destination-should-apply-alpha-0.9: #aaaaaa73;
           --blend-destination-should-overlay-twice: #aaaaaac0;
