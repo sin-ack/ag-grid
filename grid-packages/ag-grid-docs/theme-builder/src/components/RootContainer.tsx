@@ -6,6 +6,7 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import 'ag-grid-enterprise';
 import { useParentTheme } from 'atoms/parentTheme';
 import { useRenderedThemeCss } from 'atoms/renderedTheme';
+import { useResetVariableDefaults } from 'atoms/variableDefaults';
 import { Inspector } from 'components/inspector/Inspector';
 import { memo, useLayoutEffect, useState } from 'react';
 import { Tooltip } from 'react-tooltip';
@@ -16,11 +17,13 @@ import { ParentThemeMenu } from './ParentThemeMenu';
 export const RootContainer = memo(() => {
   const parentTheme = useParentTheme();
   const renderedThemeCss = useRenderedThemeCss();
+  const resetVariableDefaults = useResetVariableDefaults();
   const [hasRenderedStyles, setHasRenderedStyles] = useState(false);
 
   useLayoutEffect(() => {
     setHasRenderedStyles(true);
-  }, [renderedThemeCss]);
+    resetVariableDefaults();
+  }, [renderedThemeCss, resetVariableDefaults]);
 
   return (
     <>
