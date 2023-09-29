@@ -4,26 +4,34 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 import 'ag-grid-enterprise';
+import { useParentTheme } from 'atoms/parentTheme';
 import { useRenderedThemeCss } from 'atoms/renderedTheme';
+import { useSetVariableDefaultsElement } from 'atoms/variableDefaults';
 import { Inspector } from 'components/inspector/Inspector';
-import { memo, useLayoutEffect, useState } from 'react';
+import { memo, useLayoutEffect, useRef, useState } from 'react';
 import { Tooltip } from 'react-tooltip';
 import { CopyButton } from './CopyButton';
 import { GridPreview } from './GridPreview';
 import { ParentThemeMenu } from './ParentThemeMenu';
 
 export const RootContainer = memo(() => {
+  const parentTheme = useParentTheme();
   const renderedThemeCss = useRenderedThemeCss();
-
+  const setVariableDefaultsElement = useSetVariableDefaultsElement();
   const [hasRenderedStyles, setHasRenderedStyles] = useState(false);
+  const defaultsElementRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
+    if (defaultsElementRef.current) {
+      setVariableDefaultsElement(defaultsElementRef.current);
+    }
     setHasRenderedStyles(true);
-  }, []);
+  }, [renderedThemeCss, setVariableDefaultsElement]);
 
   return (
     <Container>
       <style>{renderedThemeCss}</style>
+      <div className={parentTheme.name} ref={defaultsElementRef} />
       {hasRenderedStyles && (
         <>
           <TopRow>

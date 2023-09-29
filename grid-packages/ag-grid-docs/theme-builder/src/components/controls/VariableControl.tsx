@@ -1,17 +1,11 @@
-import { useParentTheme } from 'atoms/parentTheme';
 import { useRenderedVariable } from 'atoms/renderedTheme';
 import { useVariableValueAtom } from 'atoms/values';
+import { useGetVariableDefault } from 'atoms/variableDefaults';
 import { useVariableDescription } from 'atoms/variableDescriptions';
 import { withErrorBoundary } from 'components/ErrorBoundary';
 import { Control } from 'components/controls/Control';
 import { Feature } from 'model/features';
 import { kebabCaseToTitleCase } from 'model/utils';
-import { Value, ValueType } from 'model/values';
-import { border } from 'model/values/border';
-import { borderStyle } from 'model/values/borderStyle';
-import { color } from 'model/values/color';
-import { dimension } from 'model/values/dimension';
-import { getVariableDefault } from 'model/variableDefaults';
 import { getVariableInfoOrThrow } from 'model/variableInfo';
 import { ReactElement, memo, useState } from 'react';
 import { DefaultValue } from './DefaultValue';
@@ -26,9 +20,9 @@ export type VariableControlProps = {
 };
 
 const VariableControl = ({ variableName, feature }: VariableControlProps): JSX.Element => {
-  const parentTheme = useParentTheme();
   const [value, setValue] = useVariableValueAtom(variableName);
   const renderedValue = useRenderedVariable(variableName);
+  const getVariableDefault = useGetVariableDefault();
   const info = getVariableInfoOrThrow(variableName);
   const description = useVariableDescription(variableName);
 
@@ -40,10 +34,7 @@ const VariableControl = ({ variableName, feature }: VariableControlProps): JSX.E
   const label = kebabCaseToTitleCase(variableName, feature.commonVariablePrefix || '--ag-');
 
   const renderDefault = () => {
-    const defaultValue =
-      renderedValue ||
-      getVariableDefault(parentTheme.name, variableName) ||
-      defaultValueForType(info.type);
+    const defaultValue = renderedValue || getVariableDefault(variableName);
     return (
       <Control
         label={label}
@@ -132,16 +123,3 @@ const VariableControl = ({ variableName, feature }: VariableControlProps): JSX.E
 
 const VariableControlWrapped = memo(withErrorBoundary(VariableControl));
 export { VariableControlWrapped as VariableControl };
-
-const defaultValueForType = (type: ValueType): Value => {
-  switch (type) {
-    case 'color':
-      return color('#999');
-    case 'dimension':
-      return dimension(1, 'px');
-    case 'border':
-      return border('solid', dimension(1, 'px'), color('#999'));
-    case 'borderStyle':
-      return borderStyle('solid');
-  }
-};
